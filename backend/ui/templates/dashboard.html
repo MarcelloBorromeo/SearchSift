@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SearchSift Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'deep-teal': '#1A262E',
+                        'muted-teal': '#263842',
+                        'terracotta': '#E07A5F',
+                        'terracotta-dark': '#C96A52',
+                        'sage': '#81B29A',
+                        'sage-dark': '#6A9A82',
+                        'off-white': '#F2F4F3',
+                        'silver': '#9CA3AF',
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        'card': '8px',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        [x-cloak] { display: none !important; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            font-weight: 200;
+        }
+        h1, h2, h3, .font-semibold, .font-bold {
+            font-weight: 400;
+        }
+        .font-medium {
+            font-weight: 300;
+        }
+        /* Custom scrollbar for dark theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1A262E;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3d5a6a;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4d6a7a;
+        }
+        /* Form inputs dark theme */
+        input[type="date"], select {
+            color-scheme: dark;
+        }
+    </style>
+</head>
+<body class="bg-deep-teal min-h-screen text-off-white font-inter">
+    <!-- Header -->
+    <header class="bg-muted-teal shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-terracotta rounded-card flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">S</span>
+                    </div>
+                    <h1 class="text-2xl font-bold text-off-white">SearchSift</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span id="connectionStatus" class="flex items-center text-sm text-silver">
+                        <span class="w-2 h-2 bg-silver rounded-full mr-2"></span>
+                        Checking...
+                    </span>
+                    <a href="/help" class="text-terracotta hover:text-terracotta-dark text-sm transition">Help</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Date Filter -->
+        <div class="bg-muted-teal rounded-card shadow-lg p-4 mb-6">
+            <div class="flex flex-wrap items-center gap-4">
+                <div>
+                    <label for="startDate" class="block text-sm font-medium text-silver">Start Date</label>
+                    <input type="date" id="startDate" class="mt-1 block w-full rounded-card border-0 bg-deep-teal text-off-white shadow-sm focus:ring-2 focus:ring-terracotta sm:text-sm px-3 py-2">
+                </div>
+                <div>
+                    <label for="endDate" class="block text-sm font-medium text-silver">End Date</label>
+                    <input type="date" id="endDate" class="mt-1 block w-full rounded-card border-0 bg-deep-teal text-off-white shadow-sm focus:ring-2 focus:ring-terracotta sm:text-sm px-3 py-2">
+                </div>
+                <div>
+                    <label for="categoryFilter" class="block text-sm font-medium text-silver">Category</label>
+                    <select id="categoryFilter" class="mt-1 block w-full rounded-card border-0 bg-deep-teal text-off-white shadow-sm focus:ring-2 focus:ring-terracotta sm:text-sm px-3 py-2">
+                        <option value="">All Categories</option>
+                    </select>
+                </div>
+                <div class="flex items-end">
+                    <button onclick="loadData()" class="bg-terracotta text-white px-4 py-2 rounded-card hover:bg-terracotta-dark transition font-medium">
+                        Apply Filter
+                    </button>
+                </div>
+                <div class="flex items-end ml-auto space-x-2">
+                    <button onclick="viewHtmlReport()" class="bg-deep-teal text-off-white px-4 py-2 rounded-card hover:bg-opacity-80 transition border border-silver/30">
+                        View HTML Report
+                    </button>
+                    <button onclick="exportCsv()" class="bg-sage text-white px-4 py-2 rounded-card hover:bg-sage-dark transition font-medium">
+                        Export CSV
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+            <div class="bg-muted-teal rounded-card shadow-lg p-6">
+                <div class="text-sm font-medium text-silver">Total Searches</div>
+                <div id="totalSearches" class="text-3xl font-bold text-terracotta mt-2">--</div>
+            </div>
+            <div class="bg-muted-teal rounded-card shadow-lg p-6">
+                <div class="text-sm font-medium text-silver">Total Clicks</div>
+                <div id="totalClicks" class="text-3xl font-bold text-sage mt-2">--</div>
+            </div>
+            <div class="bg-muted-teal rounded-card shadow-lg p-6">
+                <div class="text-sm font-medium text-silver">Unique Queries</div>
+                <div id="uniqueQueries" class="text-3xl font-bold text-off-white mt-2">--</div>
+            </div>
+            <div class="bg-muted-teal rounded-card shadow-lg p-6">
+                <div class="text-sm font-medium text-silver">Top Category</div>
+                <div id="topCategory" class="text-3xl font-bold text-terracotta mt-2">--</div>
+            </div>
+        </div>
+
+        <!-- Charts Row - Side by Side -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- Category Doughnut Chart -->
+            <div class="bg-muted-teal rounded-card shadow-lg p-6">
+                <h3 class="text-lg font-semibold text-off-white mb-4">By Category</h3>
+                <canvas id="categoryChart" height="200"></canvas>
+            </div>
+
+            <!-- Category Trend Chart -->
+            <div class="bg-muted-teal rounded-card shadow-lg p-6">
+                <h3 class="text-lg font-semibold text-off-white mb-4">Category Trend Over Time</h3>
+                <div class="mt-6">
+                    <canvas id="trendChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Queries and Recent Activity -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- Top Queries -->
+            <div class="bg-muted-teal rounded-card shadow-lg p-6">
+                <h3 class="text-lg font-semibold text-off-white mb-4">Top Queries</h3>
+                <div id="topQueries" class="space-y-2">
+                    <p class="text-silver text-sm">Loading...</p>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="bg-muted-teal rounded-card shadow-lg p-6 flex flex-col">
+                <h3 class="text-lg font-semibold text-off-white mb-4">Recent Activity</h3>
+                <div id="recentActivity" class="flex-1 space-y-3">
+                    <p class="text-silver text-sm">Loading...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Full Records Table -->
+        <div class="bg-muted-teal rounded-card shadow-lg overflow-hidden">
+            <div class="p-6 border-b border-deep-teal">
+                <h3 class="text-lg font-semibold text-off-white">All Records</h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-deep-teal">
+                    <thead class="bg-deep-teal">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-silver uppercase tracking-wider">Time</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-silver uppercase tracking-wider">Type</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-silver uppercase tracking-wider">Query</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-silver uppercase tracking-wider">Engine</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-silver uppercase tracking-wider">Category</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-silver uppercase tracking-wider">URL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recordsTable" class="divide-y divide-deep-teal">
+                        <tr>
+                            <td colspan="6" class="px-6 py-4 text-silver text-center">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Pagination -->
+            <div class="px-6 py-4 border-t border-deep-teal flex items-center justify-between">
+                <div id="paginationInfo" class="text-sm text-silver">
+                    Showing 0 of 0 records
+                </div>
+                <div class="flex space-x-2">
+                    <button id="prevBtn" onclick="prevPage()" class="px-3 py-1 border border-silver/30 rounded-card text-sm text-off-white hover:bg-deep-teal disabled:opacity-50 transition" disabled>
+                        Previous
+                    </button>
+                    <button id="nextBtn" onclick="nextPage()" class="px-3 py-1 border border-silver/30 rounded-card text-sm text-off-white hover:bg-deep-teal disabled:opacity-50 transition" disabled>
+                        Next
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Live Count Widget -->
+    <div id="liveWidget" class="fixed bottom-4 right-4 bg-muted-teal rounded-card shadow-lg p-4 hidden border border-silver/20">
+        <div class="text-xs font-medium text-silver mb-1">Live Count</div>
+        <div class="flex items-center space-x-4">
+            <div>
+                <span id="liveSearches" class="text-2xl font-bold text-terracotta">0</span>
+                <span class="text-xs text-silver">searches</span>
+            </div>
+            <div>
+                <span id="liveClicks" class="text-2xl font-bold text-sage">0</span>
+                <span class="text-xs text-silver">clicks</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme colors for charts
+        const THEME = {
+            terracotta: '#E07A5F',
+            sage: '#81B29A',
+            offWhite: '#F2F4F3',
+            silver: '#9CA3AF',
+            deepTeal: '#1A262E',
+            mutedTeal: '#263842',
+            // Extended palette for charts
+            chartColors: [
+                '#E07A5F', // terracotta
+                '#81B29A', // sage
+                '#F2CC8F', // warm yellow
+                '#3D405B', // dark blue-gray
+                '#5E8C61', // forest green
+                '#D4A373', // tan
+                '#A98467', // brown
+                '#6D6875', // purple-gray
+                '#B5838D', // dusty rose
+                '#E5989B', // pink
+                '#FFB4A2', // peach
+                '#FFCDB2', // light peach
+            ]
+        };
+
+        // Configuration
+        const API_KEY = localStorage.getItem('searchsift_api_key') || 'X2VTelOlT8uJ0dBitySztmPSAX30946G';
+        let currentOffset = 0;
+        const pageSize = 50;
+        let totalRecords = 0;
+        let categoryChart = null;
+        let trendChart = null;
+
+        // Category colors mapping for trend chart
+        const CATEGORY_COLORS = {
+            'Work': '#E07A5F',      // terracotta
+            'Coding': '#81B29A',    // sage
+            'AI': '#ec4899',        // pink
+            'Research': '#F2CC8F',  // warm yellow
+            'Shopping': '#10b981',  // emerald
+            'Social': '#6366f1',    // indigo
+            'News': '#ef4444',      // red
+            'Entertainment': '#f97316', // orange
+            'Finance': '#14b8a6',   // teal
+            'Health': '#06b6d4',    // cyan
+            'Travel': '#0ea5e9',    // sky
+            'Sports': '#84cc16',    // lime
+            'Other': '#9CA3AF',     // silver
+        };
+
+        // Set Chart.js defaults for dark theme
+        Chart.defaults.color = THEME.silver;
+        Chart.defaults.borderColor = 'rgba(156, 163, 175, 0.2)';
+
+        // Initialize dates
+        document.addEventListener('DOMContentLoaded', () => {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById('startDate').value = today.toISOString().split('T')[0];
+            document.getElementById('endDate').value = tomorrow.toISOString().split('T')[0];
+
+            // Check for API key
+            if (!API_KEY) {
+                const key = prompt('Enter your SearchSift API key:');
+                if (key) {
+                    localStorage.setItem('searchsift_api_key', key);
+                    location.reload();
+                }
+            } else {
+                loadData();
+                startLivePolling();
+            }
+        });
+
+        // API helper
+        async function apiCall(endpoint) {
+            const response = await fetch(endpoint, {
+                headers: { 'X-API-Key': API_KEY }
+            });
+
+            if (response.status === 401 || response.status === 403) {
+                localStorage.removeItem('searchsift_api_key');
+                alert('Invalid API key. Please refresh and enter a valid key.');
+                throw new Error('Unauthorized');
+            }
+
+            if (!response.ok) {
+                throw new Error(`API error: ${response.status}`);
+            }
+
+            return response.json();
+        }
+
+        // Load summary data
+        async function loadData() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const category = document.getElementById('categoryFilter').value;
+
+            try {
+                // Update connection status
+                document.getElementById('connectionStatus').innerHTML = `
+                    <span class="w-2 h-2 bg-sage rounded-full mr-2"></span>
+                    <span class="text-sage">Connected</span>
+                `;
+
+                // Load summary
+                const summary = await apiCall(`/api/summary?start=${startDate}&end=${endDate}`);
+
+                // Update stats
+                document.getElementById('totalSearches').textContent = summary.total_searches || 0;
+                document.getElementById('totalClicks').textContent = summary.total_clicks || 0;
+
+                // Calculate unique queries from top queries
+                const uniqueQueries = summary.top_queries?.length || 0;
+                document.getElementById('uniqueQueries').textContent = uniqueQueries;
+
+                // Find top category
+                const categories = summary.by_category || {};
+                const topCat = Object.entries(categories).sort((a, b) => b[1] - a[1])[0];
+                document.getElementById('topCategory').textContent = topCat ? topCat[0] : '--';
+
+                // Update category filter with all possible categories
+                const categorySelect = document.getElementById('categoryFilter');
+                const currentValue = categorySelect.value;
+                const allCategories = ['Work', 'Coding', 'AI', 'Research', 'Shopping', 'Social', 'News', 'Entertainment', 'Finance', 'Health', 'Travel', 'Sports', 'Other'];
+                categorySelect.innerHTML = '<option value="">All Categories</option>';
+                allCategories.forEach(cat => {
+                    const count = categories[cat] || 0;
+                    categorySelect.innerHTML += `<option value="${cat}">${cat} (${count})</option>`;
+                });
+                categorySelect.value = currentValue;
+
+                // Update charts
+                updateCategoryChart(categories);
+
+                // Load and update trend chart
+                const trendData = await apiCall(`/api/category-trend?start=${startDate}&end=${endDate}`);
+                updateTrendChart(trendData);
+
+                // Update top queries
+                updateTopQueries(summary.top_queries || []);
+
+                // Load records
+                currentOffset = 0;
+                await loadRecords();
+
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('connectionStatus').innerHTML = `
+                    <span class="w-2 h-2 bg-terracotta rounded-full mr-2"></span>
+                    <span class="text-terracotta">Disconnected</span>
+                `;
+            }
+        }
+
+        // Load records table
+        async function loadRecords() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const category = document.getElementById('categoryFilter').value;
+
+            let url = `/api/records?start=${startDate}&end=${endDate}&limit=${pageSize}&offset=${currentOffset}`;
+            if (category) url += `&category=${encodeURIComponent(category)}`;
+
+            try {
+                const data = await apiCall(url);
+                totalRecords = data.total;
+
+                // Update table
+                const tbody = document.getElementById('recordsTable');
+                if (data.records.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-4 text-silver text-center">No records found</td></tr>';
+                } else {
+                    tbody.innerHTML = data.records.map(record => `
+                        <tr class="hover:bg-deep-teal/50 transition">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-silver">
+                                ${formatDate(record.timestamp_utc)}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <span class="px-2 py-1 rounded-card text-xs font-medium ${record.event_type === 'search' ? 'bg-terracotta/20 text-terracotta' : 'bg-sage/20 text-sage'}">
+                                    ${record.event_type}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-off-white max-w-xs truncate" title="${escapeHtml(record.query)}">
+                                ${escapeHtml(record.query)}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-silver">
+                                ${record.engine}
+                            </td>
+                            <td class="px-6 py-4 text-sm">
+                                <div class="flex flex-wrap gap-1">
+                                    ${renderCategoryBadges(record.category)}
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-silver max-w-xs truncate" title="${escapeHtml(record.url || '')}">
+                                ${record.url ? `<a href="${escapeHtml(record.url)}" target="_blank" class="text-terracotta hover:text-terracotta-dark hover:underline transition">${truncateUrl(record.url)}</a>` : '-'}
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+
+                // Update recent activity (show 8 most recent)
+                updateRecentActivity(data.records.slice(0, 8));
+
+                // Update pagination
+                document.getElementById('paginationInfo').textContent =
+                    `Showing ${currentOffset + 1}-${Math.min(currentOffset + pageSize, totalRecords)} of ${totalRecords} records`;
+                document.getElementById('prevBtn').disabled = currentOffset === 0;
+                document.getElementById('nextBtn').disabled = currentOffset + pageSize >= totalRecords;
+
+            } catch (error) {
+                console.error('Error loading records:', error);
+            }
+        }
+
+        // Pagination
+        function prevPage() {
+            if (currentOffset > 0) {
+                currentOffset -= pageSize;
+                loadRecords();
+            }
+        }
+
+        function nextPage() {
+            if (currentOffset + pageSize < totalRecords) {
+                currentOffset += pageSize;
+                loadRecords();
+            }
+        }
+
+        // Update charts
+        function updateCategoryChart(data) {
+            const ctx = document.getElementById('categoryChart').getContext('2d');
+
+            if (categoryChart) {
+                categoryChart.destroy();
+            }
+
+            const labels = Object.keys(data);
+            const values = Object.values(data);
+
+            categoryChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: THEME.chartColors,
+                        borderColor: THEME.mutedTeal,
+                        borderWidth: 2,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: THEME.offWhite,
+                                padding: 12,
+                                font: {
+                                    family: "Inter, sans-serif"
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateTrendChart(trendData) {
+            const ctx = document.getElementById('trendChart').getContext('2d');
+
+            if (trendChart) {
+                trendChart.destroy();
+            }
+
+            const { categories, data } = trendData;
+
+            // Filter to only show categories that have data
+            const activeCategories = categories.filter(cat =>
+                data.some(d => d[cat] > 0)
+            );
+
+            // Create datasets for each category
+            const datasets = activeCategories.map(category => ({
+                label: category,
+                data: data.map(d => d[category] || 0),
+                borderColor: CATEGORY_COLORS[category] || THEME.silver,
+                backgroundColor: (CATEGORY_COLORS[category] || THEME.silver) + '20',
+                fill: false,
+                tension: 0.3,
+                pointRadius: 3,
+                pointHoverRadius: 5,
+                pointBackgroundColor: CATEGORY_COLORS[category] || THEME.silver,
+            }));
+
+            const labels = data.map(d => d.time);
+
+            trendChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: THEME.offWhite,
+                                padding: 12,
+                                usePointStyle: true,
+                                font: {
+                                    family: "Inter, sans-serif",
+                                    size: 11
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: THEME.mutedTeal,
+                            titleColor: THEME.offWhite,
+                            bodyColor: THEME.silver,
+                            borderColor: THEME.deepTeal,
+                            borderWidth: 1,
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1,
+                                color: THEME.silver,
+                                font: {
+                                    family: "Inter, sans-serif"
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(156, 163, 175, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: THEME.silver,
+                                maxRotation: 45,
+                                font: {
+                                    family: "Inter, sans-serif"
+                                }
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Update top queries list
+        function updateTopQueries(queries) {
+            const container = document.getElementById('topQueries');
+            if (queries.length === 0) {
+                container.innerHTML = '<p class="text-silver text-sm">No queries yet</p>';
+                return;
+            }
+
+            container.innerHTML = queries.map((q, i) => `
+                <div class="flex items-center justify-between py-2 ${i > 0 ? 'border-t border-deep-teal' : ''}">
+                    <span class="text-sm text-off-white truncate flex-1" title="${escapeHtml(q.query)}">
+                        ${escapeHtml(q.query)}
+                    </span>
+                    <span class="ml-2 text-xs text-terracotta bg-terracotta/20 px-2 py-1 rounded-card font-medium">
+                        ${q.count}
+                    </span>
+                </div>
+            `).join('');
+        }
+
+        // Update recent activity - show limited items to fill card without scroll
+        function updateRecentActivity(records) {
+            const container = document.getElementById('recentActivity');
+            if (records.length === 0) {
+                container.innerHTML = '<p class="text-silver text-sm flex-1 flex items-center justify-center">No recent activity</p>';
+                return;
+            }
+
+            // Show only 8 most recent items to fill card nicely
+            const recentItems = records.slice(0, 8);
+
+            container.innerHTML = recentItems.map(r => `
+                <div class="py-3 border-b border-deep-teal/50 last:border-0">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-2.5 h-2.5 rounded-full flex-shrink-0 ${r.event_type === 'search' ? 'bg-terracotta' : 'bg-sage'}"></span>
+                        <span class="text-sm text-off-white truncate flex-1">${escapeHtml(r.query)}</span>
+                        <span class="text-xs text-silver flex-shrink-0">${formatTime(r.timestamp_utc)}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Live polling
+        function startLivePolling() {
+            const widget = document.getElementById('liveWidget');
+            widget.classList.remove('hidden');
+
+            setInterval(async () => {
+                try {
+                    const today = new Date().toISOString().split('T')[0];
+                    const summary = await apiCall(`/api/summary?start=${today}&end=${today}`);
+                    document.getElementById('liveSearches').textContent = summary.total_searches || 0;
+                    document.getElementById('liveClicks').textContent = summary.total_clicks || 0;
+                } catch (error) {
+                    // Silently fail for live updates
+                }
+            }, 5000);
+        }
+
+        // Category colors - dark theme compatible
+        function getCategoryColor(category) {
+            const colors = {
+                'Work': 'bg-terracotta/20 text-terracotta',
+                'Coding': 'bg-sage/20 text-sage',
+                'AI': 'bg-pink-500/20 text-pink-400',
+                'Research': 'bg-yellow-500/20 text-yellow-400',
+                'Shopping': 'bg-emerald-500/20 text-emerald-400',
+                'Social': 'bg-indigo-500/20 text-indigo-400',
+                'News': 'bg-red-500/20 text-red-400',
+                'Entertainment': 'bg-orange-500/20 text-orange-400',
+                'Finance': 'bg-teal-500/20 text-teal-400',
+                'Health': 'bg-cyan-500/20 text-cyan-400',
+                'Travel': 'bg-sky-500/20 text-sky-400',
+                'Sports': 'bg-lime-500/20 text-lime-400',
+                'Other': 'bg-silver/20 text-silver',
+            };
+            return colors[category] || colors['Other'];
+        }
+
+        // Render multiple category badges
+        function renderCategoryBadges(categoryString) {
+            if (!categoryString) return '<span class="px-2 py-1 rounded-card text-xs font-medium bg-silver/20 text-silver">Other</span>';
+
+            // Split by comma and trim whitespace
+            const categories = categoryString.split(',').map(c => c.trim()).filter(c => c);
+
+            return categories.map(cat =>
+                `<span class="px-2 py-1 rounded-card text-xs font-medium ${getCategoryColor(cat)}">${cat}</span>`
+            ).join('');
+        }
+
+        // Utility functions - Mountain Standard Time (America/Denver)
+        function formatDate(isoString) {
+            const date = new Date(isoString);
+            return date.toLocaleString('en-US', { timeZone: 'America/Denver' });
+        }
+
+        function formatTime(isoString) {
+            const date = new Date(isoString);
+            return date.toLocaleTimeString('en-US', {
+                timeZone: 'America/Denver',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text || '';
+            return div.innerHTML;
+        }
+
+        function truncateUrl(url) {
+            try {
+                const parsed = new URL(url);
+                return parsed.hostname + (parsed.pathname.length > 30 ? parsed.pathname.substring(0, 30) + '...' : parsed.pathname);
+            } catch {
+                return url.substring(0, 50);
+            }
+        }
+
+        // View HTML Report in new window
+        async function viewHtmlReport() {
+            const startDate = document.getElementById('startDate').value;
+            try {
+                const response = await fetch(`/report/daily?date=${startDate}`, {
+                    headers: { 'X-API-Key': API_KEY }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Failed to load report: ${response.status}`);
+                }
+
+                const html = await response.text();
+                const newWindow = window.open('', '_blank');
+                newWindow.document.write(html);
+                newWindow.document.close();
+            } catch (error) {
+                console.error('Error loading report:', error);
+                alert('Failed to load report. Please check your API key and try again.');
+            }
+        }
+
+        // Export CSV with download
+        async function exportCsv() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            try {
+                const response = await fetch(`/report/csv?date=${startDate}&end=${endDate}`, {
+                    headers: { 'X-API-Key': API_KEY }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Failed to export CSV: ${response.status}`);
+                }
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `searchsift_${startDate}_${endDate}.csv`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error('Error exporting CSV:', error);
+                alert('Failed to export CSV. Please check your API key and try again.');
+            }
+        }
+    </script>
+</body>
+</html>

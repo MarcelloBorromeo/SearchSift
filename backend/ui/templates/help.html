@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SearchSift Help</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'deep-teal': '#1A262E',
+                        'muted-teal': '#263842',
+                        'terracotta': '#E07A5F',
+                        'terracotta-dark': '#C96A52',
+                        'sage': '#81B29A',
+                        'sage-dark': '#6A9A82',
+                        'off-white': '#F2F4F3',
+                        'silver': '#9CA3AF',
+                    },
+                    fontFamily: {
+                        'styrene': ['Styrene A', 'Styrene B', 'Inter', 'Roboto', 'system-ui', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        'card': '8px',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @font-face {
+            font-family: 'Styrene A';
+            src: local('Styrene A'), local('StyreneA-Regular');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Styrene A';
+            src: local('Styrene A Medium'), local('StyreneA-Medium');
+            font-weight: 500;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Styrene A';
+            src: local('Styrene A Bold'), local('StyreneA-Bold');
+            font-weight: 700;
+            font-style: normal;
+        }
+        body {
+            font-family: 'Styrene A', 'Inter', 'Roboto', system-ui, sans-serif;
+        }
+        /* Custom scrollbar for dark theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1A262E;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3d5a6a;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4d6a7a;
+        }
+    </style>
+</head>
+<body class="bg-deep-teal min-h-screen text-off-white font-styrene">
+    <div class="max-w-3xl mx-auto px-4 py-8">
+        <div class="bg-muted-teal rounded-card shadow-lg p-6 mb-6">
+            <div class="flex items-center space-x-3 mb-6">
+                <div class="w-10 h-10 bg-terracotta rounded-card flex items-center justify-center">
+                    <span class="text-white font-bold text-xl">S</span>
+                </div>
+                <h1 class="text-2xl font-bold text-off-white">SearchSift Help</h1>
+            </div>
+
+            <nav class="mb-8">
+                <a href="/" class="text-terracotta hover:text-terracotta-dark transition">&larr; Back to Dashboard</a>
+            </nav>
+
+            <div class="prose prose-invert max-w-none">
+                <h2 class="text-xl font-semibold text-off-white mt-6 mb-3">What is SearchSift?</h2>
+                <p class="text-silver mb-4">
+                    SearchSift is a local-first tool that captures your search queries and search result clicks,
+                    automatically categorizes them, and produces insightful daily reports. All data stays on your
+                    local machine.
+                </p>
+
+                <h2 class="text-xl font-semibold text-off-white mt-6 mb-3">Getting Started</h2>
+                <ol class="list-decimal list-inside text-silver space-y-2 mb-4">
+                    <li>Install the browser extension</li>
+                    <li>Configure your API key in extension settings</li>
+                    <li>Start searching - your queries are automatically captured</li>
+                    <li>View the dashboard for real-time statistics</li>
+                    <li>Generate daily reports for deeper analysis</li>
+                </ol>
+
+                <h2 class="text-xl font-semibold text-off-white mt-6 mb-3">Supported Search Engines</h2>
+                <ul class="list-disc list-inside text-silver space-y-1 mb-4">
+                    <li>Google (all regional variants)</li>
+                    <li>Bing</li>
+                    <li>DuckDuckGo</li>
+                    <li>StartPage</li>
+                    <li>Yahoo</li>
+                    <li>Yandex</li>
+                    <li>Baidu</li>
+                    <li>Ecosia</li>
+                    <li>Qwant</li>
+                    <li>Brave Search</li>
+                </ul>
+
+                <h2 class="text-xl font-semibold text-off-white mt-6 mb-3">Categories</h2>
+                <p class="text-silver mb-2">
+                    SearchSift automatically categorizes your searches using keyword matching:
+                </p>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-2 mb-4">
+                    <span class="px-3 py-1 bg-terracotta/20 text-terracotta rounded-card text-sm font-medium">Work</span>
+                    <span class="px-3 py-1 bg-sage/20 text-sage rounded-card text-sm font-medium">Coding</span>
+                    <span class="px-3 py-1 bg-yellow-500/20 text-yellow-400 rounded-card text-sm font-medium">Research</span>
+                    <span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-card text-sm font-medium">Shopping</span>
+                    <span class="px-3 py-1 bg-pink-500/20 text-pink-400 rounded-card text-sm font-medium">Social</span>
+                    <span class="px-3 py-1 bg-red-500/20 text-red-400 rounded-card text-sm font-medium">News</span>
+                    <span class="px-3 py-1 bg-indigo-500/20 text-indigo-400 rounded-card text-sm font-medium">Entertainment</span>
+                    <span class="px-3 py-1 bg-teal-500/20 text-teal-400 rounded-card text-sm font-medium">Finance</span>
+                    <span class="px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded-card text-sm font-medium">Health</span>
+                    <span class="px-3 py-1 bg-orange-500/20 text-orange-400 rounded-card text-sm font-medium">Travel</span>
+                    <span class="px-3 py-1 bg-deep-teal text-silver rounded-card text-sm font-medium">Other</span>
+                </div>
+
+                <h2 class="text-xl font-semibold text-off-white mt-6 mb-3">Privacy</h2>
+                <p class="text-silver mb-2">SearchSift captures only:</p>
+                <ul class="list-disc list-inside text-silver space-y-1 mb-4">
+                    <li>Search query text</li>
+                    <li>URLs of clicked search results</li>
+                    <li>Timestamps</li>
+                    <li>Search engine name</li>
+                </ul>
+                <p class="text-silver mb-4">
+                    <strong class="text-terracotta">We do NOT capture:</strong> page content, keystrokes, browsing history outside
+                    search engines, or any personal information beyond your search queries.
+                </p>
+
+                <h2 class="text-xl font-semibold text-off-white mt-6 mb-3">Troubleshooting</h2>
+
+                <h3 class="text-lg font-medium text-off-white mt-4 mb-2">Extension not connecting?</h3>
+                <ol class="list-decimal list-inside text-silver space-y-1 mb-4">
+                    <li>Verify the backend is running: <code class="bg-deep-teal px-2 py-0.5 rounded text-terracotta">curl http://127.0.0.1:5000/health</code></li>
+                    <li>Check API key matches in extension options and config.py</li>
+                    <li>Look for errors in the extension console (right-click icon &rarr; Inspect)</li>
+                </ol>
+
+                <h3 class="text-lg font-medium text-off-white mt-4 mb-2">No searches being captured?</h3>
+                <ol class="list-decimal list-inside text-silver space-y-1 mb-4">
+                    <li>Ensure content script is loaded (check extension details)</li>
+                    <li>Verify search engine URL matches patterns in manifest</li>
+                    <li>Check logs at <code class="bg-deep-teal px-2 py-0.5 rounded text-terracotta">logs/searchsift.log</code></li>
+                </ol>
+
+                <h2 class="text-xl font-semibold text-off-white mt-6 mb-3">API Endpoints</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm mb-4">
+                        <thead>
+                            <tr class="border-b border-deep-teal">
+                                <th class="text-left py-2 text-silver">Endpoint</th>
+                                <th class="text-left py-2 text-silver">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-silver">
+                            <tr class="border-b border-deep-teal">
+                                <td class="py-2"><code class="text-terracotta">GET /health</code></td>
+                                <td class="py-2">Health check</td>
+                            </tr>
+                            <tr class="border-b border-deep-teal">
+                                <td class="py-2"><code class="text-terracotta">POST /ingest</code></td>
+                                <td class="py-2">Receive search events</td>
+                            </tr>
+                            <tr class="border-b border-deep-teal">
+                                <td class="py-2"><code class="text-terracotta">GET /api/summary</code></td>
+                                <td class="py-2">Aggregated statistics</td>
+                            </tr>
+                            <tr class="border-b border-deep-teal">
+                                <td class="py-2"><code class="text-terracotta">GET /api/records</code></td>
+                                <td class="py-2">Individual records</td>
+                            </tr>
+                            <tr class="border-b border-deep-teal">
+                                <td class="py-2"><code class="text-terracotta">GET /report/daily</code></td>
+                                <td class="py-2">HTML report</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2"><code class="text-terracotta">GET /report/csv</code></td>
+                                <td class="py-2">CSV export</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2 class="text-xl font-semibold text-off-white mt-6 mb-3">Contact</h2>
+                <p class="text-silver">
+                    SearchSift is a local-first personal tool. For issues or contributions,
+                    check the project repository.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

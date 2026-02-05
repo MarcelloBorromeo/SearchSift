@@ -1,0 +1,188 @@
+{
+  "description": "Sample search data for testing SearchSift",
+  "date": "2024-01-15",
+  "events": [
+    {
+      "type": "search",
+      "query": "python pandas dataframe tutorial",
+      "url": "https://www.google.com/search?q=python+pandas+dataframe+tutorial",
+      "engine": "google",
+      "timestamp": "2024-01-15T09:15:00Z"
+    },
+    {
+      "type": "click",
+      "query": "python pandas dataframe tutorial",
+      "url": "https://pandas.pydata.org/docs/getting_started/intro_tutorials/",
+      "engine": "google",
+      "timestamp": "2024-01-15T09:15:30Z"
+    },
+    {
+      "type": "search",
+      "query": "best laptop deals 2024",
+      "url": "https://www.google.com/search?q=best+laptop+deals+2024",
+      "engine": "google",
+      "timestamp": "2024-01-15T10:30:00Z"
+    },
+    {
+      "type": "click",
+      "query": "best laptop deals 2024",
+      "url": "https://www.amazon.com/laptop-deals",
+      "engine": "google",
+      "timestamp": "2024-01-15T10:31:15Z"
+    },
+    {
+      "type": "search",
+      "query": "react hooks useEffect",
+      "url": "https://www.google.com/search?q=react+hooks+useEffect",
+      "engine": "google",
+      "timestamp": "2024-01-15T11:00:00Z"
+    },
+    {
+      "type": "click",
+      "query": "react hooks useEffect",
+      "url": "https://react.dev/reference/react/useEffect",
+      "engine": "google",
+      "timestamp": "2024-01-15T11:00:45Z"
+    },
+    {
+      "type": "search",
+      "query": "weather forecast this week",
+      "url": "https://www.bing.com/search?q=weather+forecast+this+week",
+      "engine": "bing",
+      "timestamp": "2024-01-15T12:00:00Z"
+    },
+    {
+      "type": "search",
+      "query": "stock market news today",
+      "url": "https://duckduckgo.com/?q=stock+market+news+today",
+      "engine": "duckduckgo",
+      "timestamp": "2024-01-15T13:00:00Z"
+    },
+    {
+      "type": "click",
+      "query": "stock market news today",
+      "url": "https://www.reuters.com/markets/",
+      "engine": "duckduckgo",
+      "timestamp": "2024-01-15T13:01:00Z"
+    },
+    {
+      "type": "search",
+      "query": "how to make sourdough bread",
+      "url": "https://www.google.com/search?q=how+to+make+sourdough+bread",
+      "engine": "google",
+      "timestamp": "2024-01-15T14:00:00Z"
+    },
+    {
+      "type": "click",
+      "query": "how to make sourdough bread",
+      "url": "https://www.kingarthurbaking.com/recipes/sourdough-bread",
+      "engine": "google",
+      "timestamp": "2024-01-15T14:02:00Z"
+    },
+    {
+      "type": "search",
+      "query": "docker compose tutorial",
+      "url": "https://www.google.com/search?q=docker+compose+tutorial",
+      "engine": "google",
+      "timestamp": "2024-01-15T15:00:00Z"
+    },
+    {
+      "type": "click",
+      "query": "docker compose tutorial",
+      "url": "https://docs.docker.com/compose/gettingstarted/",
+      "engine": "google",
+      "timestamp": "2024-01-15T15:01:30Z"
+    },
+    {
+      "type": "search",
+      "query": "netflix new releases",
+      "url": "https://www.google.com/search?q=netflix+new+releases",
+      "engine": "google",
+      "timestamp": "2024-01-15T18:00:00Z"
+    },
+    {
+      "type": "click",
+      "query": "netflix new releases",
+      "url": "https://www.netflix.com/browse/new-releases",
+      "engine": "google",
+      "timestamp": "2024-01-15T18:01:00Z"
+    },
+    {
+      "type": "search",
+      "query": "github actions workflow",
+      "url": "https://www.google.com/search?q=github+actions+workflow",
+      "engine": "google",
+      "timestamp": "2024-01-15T16:00:00Z"
+    },
+    {
+      "type": "search",
+      "query": "typescript generics explained",
+      "url": "https://www.google.com/search?q=typescript+generics+explained",
+      "engine": "google",
+      "timestamp": "2024-01-15T16:30:00Z"
+    },
+    {
+      "type": "click",
+      "query": "typescript generics explained",
+      "url": "https://www.typescriptlang.org/docs/handbook/2/generics.html",
+      "engine": "google",
+      "timestamp": "2024-01-15T16:31:00Z"
+    },
+    {
+      "type": "search",
+      "query": "healthy breakfast ideas",
+      "url": "https://www.bing.com/search?q=healthy+breakfast+ideas",
+      "engine": "bing",
+      "timestamp": "2024-01-15T08:00:00Z"
+    },
+    {
+      "type": "search",
+      "query": "reddit programming",
+      "url": "https://www.google.com/search?q=reddit+programming",
+      "engine": "google",
+      "timestamp": "2024-01-15T19:00:00Z"
+    },
+    {
+      "type": "click",
+      "query": "reddit programming",
+      "url": "https://www.reddit.com/r/programming/",
+      "engine": "google",
+      "timestamp": "2024-01-15T19:00:30Z"
+    },
+    {
+      "type": "search",
+      "query": "flight tickets to paris",
+      "url": "https://www.google.com/search?q=flight+tickets+to+paris",
+      "engine": "google",
+      "timestamp": "2024-01-15T20:00:00Z"
+    },
+    {
+      "type": "click",
+      "query": "flight tickets to paris",
+      "url": "https://www.expedia.com/Flights-To-Paris.d179898.Travel-Guide-Flights",
+      "engine": "google",
+      "timestamp": "2024-01-15T20:02:00Z"
+    },
+    {
+      "type": "search",
+      "query": "sql join types",
+      "url": "https://www.google.com/search?q=sql+join+types",
+      "engine": "google",
+      "timestamp": "2024-01-15T14:30:00Z"
+    },
+    {
+      "type": "click",
+      "query": "sql join types",
+      "url": "https://stackoverflow.com/questions/5706437/whats-the-difference-between-inner-join-left-join-right-join-and-full-join",
+      "engine": "google",
+      "timestamp": "2024-01-15T14:31:00Z"
+    },
+    {
+      "type": "search",
+      "query": "bitcoin price",
+      "url": "https://duckduckgo.com/?q=bitcoin+price",
+      "engine": "duckduckgo",
+      "timestamp": "2024-01-15T17:00:00Z"
+    }
+  ]
+}

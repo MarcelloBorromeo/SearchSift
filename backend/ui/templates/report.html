@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SearchSift Report - {{ date }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'deep-teal': '#1A262E',
+                        'muted-teal': '#263842',
+                        'terracotta': '#E07A5F',
+                        'terracotta-dark': '#C96A52',
+                        'sage': '#81B29A',
+                        'sage-dark': '#6A9A82',
+                        'off-white': '#F2F4F3',
+                        'silver': '#9CA3AF',
+                    },
+                    fontFamily: {
+                        'styrene': ['Styrene A', 'Styrene B', 'Inter', 'Roboto', 'system-ui', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        'card': '8px',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @font-face {
+            font-family: 'Styrene A';
+            src: local('Styrene A'), local('StyreneA-Regular');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Styrene A';
+            src: local('Styrene A Medium'), local('StyreneA-Medium');
+            font-weight: 500;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Styrene A';
+            src: local('Styrene A Bold'), local('StyreneA-Bold');
+            font-weight: 700;
+            font-style: normal;
+        }
+        body {
+            font-family: 'Styrene A', 'Inter', 'Roboto', system-ui, sans-serif;
+        }
+        @media print {
+            .no-print { display: none !important; }
+            body {
+                background: #1A262E !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .page-break { page-break-before: always; }
+        }
+        /* Custom scrollbar for dark theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1A262E;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3d5a6a;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4d6a7a;
+        }
+    </style>
+</head>
+<body class="bg-deep-teal min-h-screen text-off-white font-styrene">
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="bg-muted-teal rounded-card shadow-lg p-6 mb-6">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h1 class="text-3xl font-bold text-off-white">SearchSift Daily Report</h1>
+                    <p class="text-lg text-terracotta mt-1">{{ date }}</p>
+                </div>
+                <div class="no-print flex space-x-2">
+                    <button onclick="window.print()" class="bg-deep-teal text-off-white px-4 py-2 rounded-card hover:bg-opacity-80 transition border border-silver/30">
+                        Print
+                    </button>
+                    <a href="/" class="bg-terracotta text-white px-4 py-2 rounded-card hover:bg-terracotta-dark transition font-medium">
+                        Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div class="bg-muted-teal rounded-card shadow-lg p-4 text-center">
+                <div class="text-3xl font-bold text-terracotta">{{ total_searches }}</div>
+                <div class="text-sm text-silver">Total Searches</div>
+            </div>
+            <div class="bg-muted-teal rounded-card shadow-lg p-4 text-center">
+                <div class="text-3xl font-bold text-sage">{{ total_clicks }}</div>
+                <div class="text-sm text-silver">Total Clicks</div>
+            </div>
+            <div class="bg-muted-teal rounded-card shadow-lg p-4 text-center">
+                <div class="text-3xl font-bold text-off-white">{{ category_counts|length }}</div>
+                <div class="text-sm text-silver">Categories</div>
+            </div>
+            <div class="bg-muted-teal rounded-card shadow-lg p-4 text-center">
+                <div class="text-3xl font-bold text-terracotta">{{ engine_counts|length }}</div>
+                <div class="text-sm text-silver">Search Engines</div>
+            </div>
+        </div>
+
+        <!-- Category Breakdown -->
+        <div class="bg-muted-teal rounded-card shadow-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold text-off-white mb-4">Category Breakdown</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <canvas id="categoryChart" height="200"></canvas>
+                </div>
+                <div>
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-deep-teal">
+                                <th class="text-left py-2 text-sm font-medium text-silver">Category</th>
+                                <th class="text-right py-2 text-sm font-medium text-silver">Count</th>
+                                <th class="text-right py-2 text-sm font-medium text-silver">%</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% set total = category_counts.values()|sum %}
+                            {% for category, count in category_counts.items()|sort(attribute='1', reverse=true) %}
+                            <tr class="border-b border-deep-teal last:border-0">
+                                <td class="py-2 text-sm text-off-white">{{ category }}</td>
+                                <td class="py-2 text-sm text-silver text-right">{{ count }}</td>
+                                <td class="py-2 text-sm text-terracotta text-right font-medium">
+                                    {{ ((count / total) * 100)|round(1) }}%
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Trend Over Time -->
+        <div class="bg-muted-teal rounded-card shadow-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold text-off-white mb-4 text-center">Category Trend Over Time</h2>
+            <canvas id="trendChart" height="120"></canvas>
+        </div>
+
+        {% if top_queries %}
+        <!-- Top Queries -->
+        <div class="bg-muted-teal rounded-card shadow-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold text-off-white mb-4">Top Queries</h2>
+            <table class="w-full">
+                <thead>
+                    <tr class="border-b border-deep-teal">
+                        <th class="text-left py-2 text-sm font-medium text-silver">#</th>
+                        <th class="text-left py-2 text-sm font-medium text-silver">Query</th>
+                        <th class="text-right py-2 text-sm font-medium text-silver">Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in top_queries[:10] %}
+                    <tr class="border-b border-deep-teal last:border-0">
+                        <td class="py-2 text-sm text-silver">{{ loop.index }}</td>
+                        <td class="py-2 text-sm text-off-white">{{ item.query }}</td>
+                        <td class="py-2 text-sm text-right">
+                            <span class="bg-terracotta/20 text-terracotta px-2 py-1 rounded-card text-xs font-medium">{{ item.count }}</span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        {% if top_domains %}
+        <!-- Top Domains -->
+        <div class="bg-muted-teal rounded-card shadow-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold text-off-white mb-4">Top Clicked Domains</h2>
+            <table class="w-full">
+                <thead>
+                    <tr class="border-b border-deep-teal">
+                        <th class="text-left py-2 text-sm font-medium text-silver">#</th>
+                        <th class="text-left py-2 text-sm font-medium text-silver">Domain</th>
+                        <th class="text-right py-2 text-sm font-medium text-silver">Clicks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in top_domains[:10] %}
+                    <tr class="border-b border-deep-teal last:border-0">
+                        <td class="py-2 text-sm text-silver">{{ loop.index }}</td>
+                        <td class="py-2 text-sm text-off-white">{{ item.domain }}</td>
+                        <td class="py-2 text-sm text-right">
+                            <span class="bg-sage/20 text-sage px-2 py-1 rounded-card text-xs font-medium">{{ item.count }}</span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        {% if hourly_distribution %}
+        <!-- Hourly Activity -->
+        <div class="bg-muted-teal rounded-card shadow-lg p-6 mb-6 page-break">
+            <h2 class="text-xl font-semibold text-off-white mb-4">Hourly Activity</h2>
+            <canvas id="hourlyChart" height="100"></canvas>
+        </div>
+        {% endif %}
+
+        <!-- All Records -->
+        <div class="bg-muted-teal rounded-card shadow-lg p-6">
+            <h2 class="text-xl font-semibold text-off-white mb-4">All Records ({{ records|length }})</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-deep-teal bg-deep-teal">
+                            <th class="text-left py-2 px-2 font-medium text-silver">Time</th>
+                            <th class="text-left py-2 px-2 font-medium text-silver">Type</th>
+                            <th class="text-left py-2 px-2 font-medium text-silver">Query</th>
+                            <th class="text-left py-2 px-2 font-medium text-silver">Engine</th>
+                            <th class="text-left py-2 px-2 font-medium text-silver">Category</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in records %}
+                        <tr class="border-b border-deep-teal last:border-0 hover:bg-deep-teal/50 transition">
+                            <td class="py-2 px-2 text-silver whitespace-nowrap">
+                                {{ record.timestamp_utc.strftime('%H:%M:%S') if record.timestamp_utc else '' }}
+                            </td>
+                            <td class="py-2 px-2">
+                                <span class="px-2 py-0.5 rounded-card text-xs font-medium {% if record.event_type == 'search' %}bg-terracotta/20 text-terracotta{% else %}bg-sage/20 text-sage{% endif %}">
+                                    {{ record.event_type }}
+                                </span>
+                            </td>
+                            <td class="py-2 px-2 text-off-white max-w-xs truncate" title="{{ record.query }}">
+                                {{ record.query[:80] }}{% if record.query|length > 80 %}...{% endif %}
+                            </td>
+                            <td class="py-2 px-2 text-silver capitalize">{{ record.engine }}</td>
+                            <td class="py-2 px-2">
+                                <span class="px-2 py-0.5 rounded-card text-xs font-medium bg-deep-teal text-silver">
+                                    {{ record.category }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center text-silver text-sm mt-8">
+            Generated by SearchSift on {{ now().strftime('%Y-%m-%d %H:%M:%S UTC') if now is defined else '' }}
+        </div>
+    </div>
+
+    <script>
+        // Theme colors
+        const THEME = {
+            terracotta: '#E07A5F',
+            sage: '#81B29A',
+            offWhite: '#F2F4F3',
+            silver: '#9CA3AF',
+            deepTeal: '#1A262E',
+            mutedTeal: '#263842',
+            chartColors: [
+                '#E07A5F', '#81B29A', '#F2CC8F', '#3D405B',
+                '#5E8C61', '#D4A373', '#A98467', '#6D6875',
+                '#B5838D', '#E5989B', '#FFB4A2', '#FFCDB2'
+            ]
+        };
+
+        // Set Chart.js defaults for dark theme
+        Chart.defaults.color = THEME.silver;
+        Chart.defaults.borderColor = 'rgba(156, 163, 175, 0.2)';
+
+        // Category Chart
+        const categoryData = {{ category_counts|tojson|safe }};
+        new Chart(document.getElementById('categoryChart'), {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(categoryData),
+                datasets: [{
+                    data: Object.values(categoryData),
+                    backgroundColor: THEME.chartColors,
+                    borderColor: THEME.mutedTeal,
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: THEME.offWhite,
+                            padding: 12,
+                            font: {
+                                family: "'Styrene A', 'Inter', sans-serif"
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Category colors for trend chart
+        const CATEGORY_COLORS = {
+            'Work': '#E07A5F',
+            'Coding': '#81B29A',
+            'AI': '#ec4899',
+            'Research': '#F2CC8F',
+            'Shopping': '#10b981',
+            'Social': '#6366f1',
+            'News': '#ef4444',
+            'Entertainment': '#f97316',
+            'Finance': '#14b8a6',
+            'Health': '#06b6d4',
+            'Travel': '#0ea5e9',
+            'Sports': '#84cc16',
+            'Other': '#9CA3AF',
+        };
+
+        // Category Trend Chart
+        const hourlyByCategory = {{ hourly_by_category|tojson|safe if hourly_by_category else '{}' }};
+        const trendCategories = Object.keys(hourlyByCategory);
+        const hours = Array.from({length: 24}, (_, i) => `${i}:00`);
+
+        if (trendCategories.length > 0) {
+            const trendDatasets = trendCategories.map(category => ({
+                label: category,
+                data: hourlyByCategory[category] || Array(24).fill(0),
+                borderColor: CATEGORY_COLORS[category] || THEME.silver,
+                backgroundColor: (CATEGORY_COLORS[category] || THEME.silver) + '20',
+                fill: false,
+                tension: 0.3,
+                pointRadius: 3,
+                pointBackgroundColor: CATEGORY_COLORS[category] || THEME.silver,
+            }));
+
+            new Chart(document.getElementById('trendChart'), {
+                type: 'line',
+                data: {
+                    labels: hours,
+                    datasets: trendDatasets
+                },
+                options: {
+                    responsive: true,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: THEME.offWhite,
+                                padding: 12,
+                                usePointStyle: true,
+                                font: { family: "'Styrene A', 'Inter', sans-serif", size: 11 }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1,
+                                color: THEME.silver,
+                                font: { family: "'Styrene A', 'Inter', sans-serif" }
+                            },
+                            grid: { color: 'rgba(156, 163, 175, 0.1)' }
+                        },
+                        x: {
+                            ticks: {
+                                color: THEME.silver,
+                                maxRotation: 45,
+                                font: { family: "'Styrene A', 'Inter', sans-serif" }
+                            },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        {% if hourly_distribution %}
+        // Hourly Chart
+        const hourlyData = {{ hourly_distribution|tojson|safe }};
+        new Chart(document.getElementById('hourlyChart'), {
+            type: 'line',
+            data: {
+                labels: Array.from({length: 24}, (_, i) => `${i}:00`),
+                datasets: [{
+                    label: 'Events',
+                    data: hourlyData,
+                    borderColor: THEME.terracotta,
+                    backgroundColor: 'rgba(224, 122, 95, 0.1)',
+                    fill: true,
+                    tension: 0.3,
+                    pointBackgroundColor: THEME.terracotta,
+                    pointBorderColor: THEME.terracotta
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: THEME.silver,
+                            font: { family: "'Styrene A', 'Inter', sans-serif" }
+                        },
+                        grid: { color: 'rgba(156, 163, 175, 0.1)' }
+                    },
+                    x: {
+                        ticks: {
+                            color: THEME.silver,
+                            font: { family: "'Styrene A', 'Inter', sans-serif" }
+                        },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+        {% endif %}
+    </script>
+</body>
+</html>

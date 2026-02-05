@@ -1,0 +1,85 @@
+{
+  "manifest_version": 2,
+  "name": "SearchSift",
+  "version": "1.0.0",
+  "description": "Capture and categorize your search queries locally for personal analytics.",
+
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "storage",
+    "*://*.google.com/*",
+    "*://*.google.co.uk/*",
+    "*://*.google.ca/*",
+    "*://*.google.com.au/*",
+    "*://*.bing.com/*",
+    "*://*.duckduckgo.com/*",
+    "*://*.startpage.com/*",
+    "*://*.yahoo.com/*",
+    "*://*.yandex.com/*",
+    "*://*.yandex.ru/*",
+    "*://*.baidu.com/*",
+    "*://*.ecosia.org/*",
+    "*://*.qwant.com/*",
+    "*://*.brave.com/*",
+    "*://*.search.brave.com/*"
+  ],
+
+  "background": {
+    "scripts": ["background_firefox.js"],
+    "persistent": false
+  },
+
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.google.com/*",
+        "*://*.google.co.uk/*",
+        "*://*.google.ca/*",
+        "*://*.google.com.au/*",
+        "*://*.bing.com/*",
+        "*://*.duckduckgo.com/*",
+        "*://*.startpage.com/*",
+        "*://*.yahoo.com/*",
+        "*://*.yandex.com/*",
+        "*://*.yandex.ru/*",
+        "*://*.baidu.com/*",
+        "*://*.ecosia.org/*",
+        "*://*.qwant.com/*",
+        "*://*.brave.com/*",
+        "*://*.search.brave.com/*"
+      ],
+      "js": ["content_script.js"],
+      "run_at": "document_idle"
+    }
+  ],
+
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+
+  "options_ui": {
+    "page": "options.html",
+    "browser_style": true
+  },
+
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "searchsift@local",
+      "strict_min_version": "109.0"
+    }
+  }
+}

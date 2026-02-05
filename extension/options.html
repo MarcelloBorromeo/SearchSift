@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SearchSift Settings</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f1f5f9;
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .logo {
+      width: 64px;
+      height: 64px;
+      background: #3b82f6;
+      border-radius: 16px;
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    h1 {
+      font-size: 24px;
+      color: #1e293b;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .card h2 {
+      font-size: 16px;
+      color: #1e293b;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: #475569;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .hint {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .checkbox-group input {
+      width: 18px;
+      height: 18px;
+    }
+
+    .checkbox-group label {
+      margin: 0;
+    }
+
+    button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: #3b82f6;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #2563eb;
+    }
+
+    .btn-secondary {
+      background: #e2e8f0;
+      color: #475569;
+    }
+
+    .btn-secondary:hover {
+      background: #cbd5e1;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    .message {
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .message.success {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .message.error {
+      background: #fef2f2;
+      color: #dc2626;
+    }
+
+    .connection-test {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px;
+      background: #f8fafc;
+      border-radius: 6px;
+      margin-top: 12px;
+    }
+
+    .test-indicator {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #94a3b8;
+    }
+
+    .test-indicator.success {
+      background: #22c55e;
+    }
+
+    .test-indicator.error {
+      background: #ef4444;
+    }
+
+    .test-text {
+      font-size: 13px;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">S</div>
+      <h1>SearchSift Settings</h1>
+      <p class="subtitle">Configure your local search tracking</p>
+    </div>
+
+    <div id="message" class="message" style="display: none;"></div>
+
+    <div class="card">
+      <h2>Backend Connection</h2>
+
+      <div class="form-group">
+        <label for="backendUrl">Backend URL</label>
+        <input type="text" id="backendUrl" value="http://127.0.0.1:5050" placeholder="http://127.0.0.1:5000">
+        <p class="hint">The URL where your SearchSift backend is running</p>
+      </div>
+
+      <div class="form-group">
+        <label for="apiKey">API Key</label>
+        <input type="password" id="apiKey" placeholder="Enter your API key">
+        <p class="hint">Get this from your backend config.py or generate with scripts/generate_api_key.py</p>
+      </div>
+
+      <div class="connection-test">
+        <div id="testIndicator" class="test-indicator"></div>
+        <span id="testText" class="test-text">Not tested</span>
+        <button id="testBtn" class="btn-secondary" style="margin-left: auto; padding: 6px 12px;">Test Connection</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Privacy Settings</h2>
+
+      <div class="form-group">
+        <div class="checkbox-group">
+          <input type="checkbox" id="captureSearches" checked>
+          <label for="captureSearches">Capture search queries</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="checkbox-group">
+          <input type="checkbox" id="captureClicks" checked>
+          <label for="captureClicks">Capture result clicks</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="checkbox-group">
+          <input type="checkbox" id="enabled" checked>
+          <label for="enabled">Extension enabled</label>
+        </div>
+        <p class="hint">Temporarily disable tracking without uninstalling</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Search Engines</h2>
+      <p class="hint" style="margin-bottom: 12px;">Select which search engines to track:</p>
+
+      <div class="form-group">
+        <div class="checkbox-group"><input type="checkbox" id="engineGoogle" checked><label>Google</label></div>
+      </div>
+      <div class="form-group">
+        <div class="checkbox-group"><input type="checkbox" id="engineBing" checked><label>Bing</label></div>
+      </div>
+      <div class="form-group">
+        <div class="checkbox-group"><input type="checkbox" id="engineDuckDuckGo" checked><label>DuckDuckGo</label></div>
+      </div>
+      <div class="form-group">
+        <div class="checkbox-group"><input type="checkbox" id="engineStartPage" checked><label>StartPage</label></div>
+      </div>
+      <div class="form-group">
+        <div class="checkbox-group"><input type="checkbox" id="engineYahoo" checked><label>Yahoo</label></div>
+      </div>
+      <div class="form-group">
+        <div class="checkbox-group"><input type="checkbox" id="engineOther" checked><label>Other (Ecosia, Qwant, Brave, etc.)</label></div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="resetBtn" class="btn-secondary">Reset to Defaults</button>
+      <button id="saveBtn" class="btn-primary">Save Settings</button>
+    </div>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+# SearchSift Backend Dependencies
+
+# Web framework
+Flask>=2.3.0
+
+# Database ORM
+SQLAlchemy>=2.0.0
+
+# Date/time handling
+python-dateutil>=2.8.0
+
+# Scheduling (optional, for automated reports)
+APScheduler>=3.10.0
+
+# Testing
+pytest>=7.0.0
+pytest-flask>=1.2.0
+
+# Optional: NLP categorization (uncomment if needed)
+# spacy>=3.5.0
+# scikit-learn>=1.3.0  # For TF-IDF fallback
+
+# Development
+python-dotenv>=1.0.0

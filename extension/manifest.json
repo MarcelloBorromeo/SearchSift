@@ -1,0 +1,69 @@
+{
+  "manifest_version": 3,
+  "name": "SearchSift",
+  "version": "1.0.0",
+  "description": "Capture and categorize your search queries locally for personal analytics.",
+
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "storage",
+    "scripting"
+  ],
+
+  "host_permissions": [
+    "*://*.google.com/*",
+    "*://*.google.co.uk/*",
+    "*://*.google.ca/*",
+    "*://*.google.com.au/*",
+    "*://*.bing.com/*",
+    "*://*.duckduckgo.com/*",
+    "*://*.startpage.com/*",
+    "*://*.yahoo.com/*",
+    "*://*.yandex.com/*",
+    "*://*.yandex.ru/*",
+    "*://*.baidu.com/*",
+    "*://*.ecosia.org/*",
+    "*://*.qwant.com/*",
+    "*://*.brave.com/*",
+    "*://*.search.brave.com/*"
+  ],
+
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.google.com/*",
+        "*://*.google.co.uk/*",
+        "*://*.google.ca/*",
+        "*://*.google.com.au/*",
+        "*://*.bing.com/*",
+        "*://*.duckduckgo.com/*",
+        "*://*.startpage.com/*",
+        "*://*.yahoo.com/*",
+        "*://*.yandex.com/*",
+        "*://*.yandex.ru/*",
+        "*://*.baidu.com/*",
+        "*://*.ecosia.org/*",
+        "*://*.qwant.com/*",
+        "*://*.brave.com/*",
+        "*://*.search.brave.com/*"
+      ],
+      "js": ["content_script.js"],
+      "run_at": "document_idle"
+    }
+  ],
+
+  "action": {
+    "default_popup": "popup.html"
+  },
+
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  }
+}
