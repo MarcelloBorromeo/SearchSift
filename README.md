@@ -2,6 +2,7 @@
 
 <img width="1380" height="820" alt="Screenshot 2026-02-05 at 11 19 58 AM" src="https://github.com/user-attachments/assets/60f607ef-2852-400d-a0f3-80cf37f5e2e5" />
 
+
 A local-first browser extension + backend that captures your search queries and search-result clicks, automatically categorizes them, and produces daily reports.
 
 ## Quick Start
