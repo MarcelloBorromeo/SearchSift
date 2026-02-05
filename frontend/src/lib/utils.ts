@@ -5,7 +5,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const API_KEY = 'X2VTelOlT8uJ0dBitySztmPSAX30946G'
+// API key should be set via environment variable VITE_API_KEY or localStorage
+export const API_KEY = import.meta.env.VITE_API_KEY || localStorage.getItem('searchsift_api_key') || ''
 
 export async function apiCall<T>(endpoint: string): Promise<T> {
   const response = await fetch(endpoint, {

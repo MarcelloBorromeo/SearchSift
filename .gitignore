@@ -21,6 +21,10 @@ build/
 
 # Project specific
 data/searchsift.db
+data/*.db-shm
+data/*.db-wal
+*.db-shm
+*.db-wal
 logs/*.log
 reports/*.html
 reports/*.csv
