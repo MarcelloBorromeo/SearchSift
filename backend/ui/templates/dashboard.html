@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
@@ -16,6 +16,7 @@
                     colors: {
                         'deep-teal': '#1A262E',
                         'muted-teal': '#263842',
+                        'muted-teal-hover': '#2d4450',
                         'terracotta': '#E07A5F',
                         'terracotta-dark': '#C96A52',
                         'sage': '#81B29A',
@@ -24,10 +25,29 @@
                         'silver': '#9CA3AF',
                     },
                     fontFamily: {
-                        'inter': ['Inter', 'system-ui', 'sans-serif'],
+                        'lora': ['Lora', 'Georgia', 'serif'],
                     },
                     borderRadius: {
-                        'card': '8px',
+                        'card': '10px',
+                    },
+                    animation: {
+                        'shimmer': 'shimmer 1.5s infinite',
+                        'fade-in': 'fadeIn 0.3s ease-out',
+                        'slide-up': 'slideUp 0.3s ease-out',
+                    },
+                    keyframes: {
+                        shimmer: {
+                            '0%': { backgroundPosition: '200% 0' },
+                            '100%': { backgroundPosition: '-200% 0' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
                     }
                 }
             }
@@ -36,14 +56,14 @@
     <style>
         [x-cloak] { display: none !important; }
         body {
-            font-family: 'Inter', system-ui, sans-serif;
-            font-weight: 200;
-        }
-        h1, h2, h3, .font-semibold, .font-bold {
+            font-family: 'Lora', Georgia, serif;
             font-weight: 400;
         }
+        h1, h2, h3, .font-semibold, .font-bold {
+            font-weight: 600;
+        }
         .font-medium {
-            font-weight: 300;
+            font-weight: 500;
         }
         /* Custom scrollbar for dark theme */
         ::-webkit-scrollbar {
@@ -64,25 +84,80 @@
         input[type="date"], select {
             color-scheme: dark;
         }
+        /* Skeleton loading */
+        .skeleton {
+            background: linear-gradient(90deg, #263842 25%, #2d4450 50%, #263842 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        /* Smooth transitions */
+        .card-hover {
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+        /* Button hover effects */
+        .btn-hover {
+            transition: all 0.2s ease;
+        }
+        .btn-hover:hover {
+            transform: translateY(-1px);
+        }
+        .btn-hover:active {
+            transform: translateY(0);
+        }
+        /* Row hover effects */
+        .row-hover {
+            transition: background-color 0.15s ease;
+        }
+        /* Focus styles */
+        .focus-ring:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #1A262E, 0 0 0 4px #E07A5F;
+        }
+        /* Teal outlined text with eggshell white interior */
+        .teal-outline {
+            color: #F5F5DC;
+            font-weight: 900;
+            -webkit-text-stroke: 3px #14b8a6;
+            text-stroke: 3px #14b8a6;
+            text-shadow: 
+                -3px -3px 0 #14b8a6,
+                3px -3px 0 #14b8a6,
+                -3px 3px 0 #14b8a6,
+                3px 3px 0 #14b8a6,
+                -2px -2px 0 #14b8a6,
+                2px -2px 0 #14b8a6,
+                -2px 2px 0 #14b8a6,
+                2px 2px 0 #14b8a6;
+        }
     </style>
 </head>
-<body class="bg-deep-teal min-h-screen text-off-white font-inter">
+<body class="bg-deep-teal min-h-screen text-off-white font-lora">
     <!-- Header -->
-    <header class="bg-muted-teal shadow-lg">
+    <header class="bg-muted-teal shadow-lg border-b border-white/5">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div class="flex justify-between items-center">
                 <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-terracotta rounded-card flex items-center justify-center">
+                    <div class="w-10 h-10 bg-terracotta rounded-card flex items-center justify-center transition-transform hover:scale-105">
                         <span class="text-white font-bold text-xl">S</span>
                     </div>
-                    <h1 class="text-2xl font-bold text-off-white">SearchSift</h1>
+                    <h1 class="text-2xl teal-outline">
+                        SearchSift
+                    </h1>
                 </div>
                 <div class="flex items-center space-x-4">
                     <span id="connectionStatus" class="flex items-center text-sm text-silver">
-                        <span class="w-2 h-2 bg-silver rounded-full mr-2"></span>
+                        <span class="w-2 h-2 bg-silver rounded-full mr-2 animate-pulse"></span>
                         Checking...
                     </span>
-                    <a href="/help" class="text-terracotta hover:text-terracotta-dark text-sm transition">Help</a>
+                    <a href="/help" class="text-terracotta hover:text-terracotta-dark text-sm transition-colors duration-200">Help</a>
                 </div>
             </div>
         </div>
@@ -90,32 +165,32 @@
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <!-- Date Filter -->
-        <div class="bg-muted-teal rounded-card shadow-lg p-4 mb-6">
+        <div class="bg-muted-teal rounded-card shadow-lg p-4 mb-6 border border-white/5">
             <div class="flex flex-wrap items-center gap-4">
                 <div>
-                    <label for="startDate" class="block text-sm font-medium text-silver">Start Date</label>
-                    <input type="date" id="startDate" class="mt-1 block w-full rounded-card border-0 bg-deep-teal text-off-white shadow-sm focus:ring-2 focus:ring-terracotta sm:text-sm px-3 py-2">
+                    <label for="startDate" class="block text-sm font-medium text-silver mb-1">Start Date</label>
+                    <input type="date" id="startDate" class="block w-full rounded-lg border-0 bg-deep-teal text-off-white shadow-sm focus-ring sm:text-sm px-3 py-2.5 transition-colors hover:bg-muted-teal-hover">
                 </div>
                 <div>
-                    <label for="endDate" class="block text-sm font-medium text-silver">End Date</label>
-                    <input type="date" id="endDate" class="mt-1 block w-full rounded-card border-0 bg-deep-teal text-off-white shadow-sm focus:ring-2 focus:ring-terracotta sm:text-sm px-3 py-2">
+                    <label for="endDate" class="block text-sm font-medium text-silver mb-1">End Date</label>
+                    <input type="date" id="endDate" class="block w-full rounded-lg border-0 bg-deep-teal text-off-white shadow-sm focus-ring sm:text-sm px-3 py-2.5 transition-colors hover:bg-muted-teal-hover">
                 </div>
                 <div>
-                    <label for="categoryFilter" class="block text-sm font-medium text-silver">Category</label>
-                    <select id="categoryFilter" class="mt-1 block w-full rounded-card border-0 bg-deep-teal text-off-white shadow-sm focus:ring-2 focus:ring-terracotta sm:text-sm px-3 py-2">
+                    <label for="categoryFilter" class="block text-sm font-medium text-silver mb-1">Category</label>
+                    <select id="categoryFilter" class="block w-full rounded-lg border-0 bg-deep-teal text-off-white shadow-sm focus-ring sm:text-sm px-3 py-2.5 transition-colors hover:bg-muted-teal-hover">
                         <option value="">All Categories</option>
                     </select>
                 </div>
                 <div class="flex items-end">
-                    <button onclick="loadData()" class="bg-terracotta text-white px-4 py-2 rounded-card hover:bg-terracotta-dark transition font-medium">
+                    <button onclick="loadData()" class="bg-terracotta text-white px-5 py-2.5 rounded-lg hover:bg-terracotta-dark btn-hover font-medium focus-ring">
                         Apply Filter
                     </button>
                 </div>
                 <div class="flex items-end ml-auto space-x-2">
-                    <button onclick="viewHtmlReport()" class="bg-deep-teal text-off-white px-4 py-2 rounded-card hover:bg-opacity-80 transition border border-silver/30">
+                    <button onclick="viewHtmlReport()" class="bg-deep-teal text-off-white px-4 py-2.5 rounded-lg hover:bg-muted-teal-hover transition-colors border border-silver/20 hover:border-silver/30 focus-ring">
                         View HTML Report
                     </button>
-                    <button onclick="exportCsv()" class="bg-sage text-white px-4 py-2 rounded-card hover:bg-sage-dark transition font-medium">
+                    <button onclick="exportCsv()" class="bg-sage text-white px-4 py-2.5 rounded-lg hover:bg-sage-dark btn-hover font-medium focus-ring">
                         Export CSV
                     </button>
                 </div>
@@ -124,37 +199,74 @@
 
         <!-- Stats Cards -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-            <div class="bg-muted-teal rounded-card shadow-lg p-6">
+            <div class="bg-muted-teal rounded-card shadow-lg p-6 border border-white/5 card-hover">
                 <div class="text-sm font-medium text-silver">Total Searches</div>
-                <div id="totalSearches" class="text-3xl font-bold text-terracotta mt-2">--</div>
+                <div id="totalSearches" class="text-3xl font-bold text-terracotta mt-2">
+                    <div class="skeleton h-9 w-16 rounded"></div>
+                </div>
             </div>
-            <div class="bg-muted-teal rounded-card shadow-lg p-6">
+            <div class="bg-muted-teal rounded-card shadow-lg p-6 border border-white/5 card-hover">
                 <div class="text-sm font-medium text-silver">Total Clicks</div>
-                <div id="totalClicks" class="text-3xl font-bold text-sage mt-2">--</div>
+                <div id="totalClicks" class="text-3xl font-bold text-sage mt-2">
+                    <div class="skeleton h-9 w-16 rounded"></div>
+                </div>
             </div>
-            <div class="bg-muted-teal rounded-card shadow-lg p-6">
+            <div class="bg-muted-teal rounded-card shadow-lg p-6 border border-white/5 card-hover">
                 <div class="text-sm font-medium text-silver">Unique Queries</div>
-                <div id="uniqueQueries" class="text-3xl font-bold text-off-white mt-2">--</div>
+                <div id="uniqueQueries" class="text-3xl font-bold text-off-white mt-2">
+                    <div class="skeleton h-9 w-16 rounded"></div>
+                </div>
             </div>
-            <div class="bg-muted-teal rounded-card shadow-lg p-6">
+            <div class="bg-muted-teal rounded-card shadow-lg p-6 border border-white/5 card-hover">
                 <div class="text-sm font-medium text-silver">Top Category</div>
-                <div id="topCategory" class="text-3xl font-bold text-terracotta mt-2">--</div>
+                <div id="topCategory" class="text-3xl font-bold text-terracotta mt-2">
+                    <div class="skeleton h-9 w-24 rounded"></div>
+                </div>
             </div>
         </div>
 
         <!-- Charts Row - Side by Side -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             <!-- Category Doughnut Chart -->
-            <div class="bg-muted-teal rounded-card shadow-lg p-6">
+            <div class="bg-muted-teal rounded-card shadow-lg p-6 border border-white/5 card-hover">
                 <h3 class="text-lg font-semibold text-off-white mb-4">By Category</h3>
-                <canvas id="categoryChart" height="200"></canvas>
+                <div id="categoryChartContainer">
+                    <div id="categoryChartSkeleton" class="flex items-center justify-center h-48">
+                        <div class="skeleton w-40 h-40 rounded-full"></div>
+                    </div>
+                    <canvas id="categoryChart" height="200" class="hidden"></canvas>
+                </div>
+                <div id="categoryEmptyState" class="hidden flex flex-col items-center justify-center h-48 text-silver">
+                    <svg class="w-12 h-12 mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
+                    </svg>
+                    <p class="text-sm">No category data available</p>
+                </div>
             </div>
 
             <!-- Category Trend Chart -->
-            <div class="bg-muted-teal rounded-card shadow-lg p-6">
+            <div class="bg-muted-teal rounded-card shadow-lg p-6 border border-white/5 card-hover">
                 <h3 class="text-lg font-semibold text-off-white mb-4">Category Trend Over Time</h3>
-                <div class="mt-6">
-                    <canvas id="trendChart" height="200"></canvas>
+                <div id="trendChartContainer" class="mt-6">
+                    <div id="trendChartSkeleton" class="h-48">
+                        <div class="flex items-end justify-between h-full gap-2 px-4">
+                            <div class="skeleton w-8 h-20 rounded"></div>
+                            <div class="skeleton w-8 h-32 rounded"></div>
+                            <div class="skeleton w-8 h-24 rounded"></div>
+                            <div class="skeleton w-8 h-36 rounded"></div>
+                            <div class="skeleton w-8 h-28 rounded"></div>
+                            <div class="skeleton w-8 h-16 rounded"></div>
+                            <div class="skeleton w-8 h-40 rounded"></div>
+                        </div>
+                    </div>
+                    <canvas id="trendChart" height="200" class="hidden"></canvas>
+                </div>
+                <div id="trendEmptyState" class="hidden flex flex-col items-center justify-center h-48 text-silver">
+                    <svg class="w-12 h-12 mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
+                    </svg>
+                    <p class="text-sm">No trend data available</p>
                 </div>
             </div>
         </div>
@@ -162,24 +274,44 @@
         <!-- Top Queries and Recent Activity -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             <!-- Top Queries -->
-            <div class="bg-muted-teal rounded-card shadow-lg p-6">
+            <div class="bg-muted-teal rounded-card shadow-lg p-6 border border-white/5 card-hover">
                 <h3 class="text-lg font-semibold text-off-white mb-4">Top Queries</h3>
                 <div id="topQueries" class="space-y-2">
-                    <p class="text-silver text-sm">Loading...</p>
+                    <div class="skeleton h-10 rounded mb-2"></div>
+                    <div class="skeleton h-10 rounded mb-2"></div>
+                    <div class="skeleton h-10 rounded mb-2"></div>
+                    <div class="skeleton h-10 rounded"></div>
+                </div>
+                <div id="topQueriesEmptyState" class="hidden flex flex-col items-center justify-center h-40 text-silver">
+                    <svg class="w-12 h-12 mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    <p class="text-sm">No queries recorded yet</p>
+                    <p class="text-xs mt-1 opacity-70">Start searching to see your top queries</p>
                 </div>
             </div>
 
             <!-- Recent Activity -->
-            <div class="bg-muted-teal rounded-card shadow-lg p-6 flex flex-col">
+            <div class="bg-muted-teal rounded-card shadow-lg p-6 flex flex-col border border-white/5 card-hover">
                 <h3 class="text-lg font-semibold text-off-white mb-4">Recent Activity</h3>
                 <div id="recentActivity" class="flex-1 space-y-3">
-                    <p class="text-silver text-sm">Loading...</p>
+                    <div class="skeleton h-12 rounded mb-2"></div>
+                    <div class="skeleton h-12 rounded mb-2"></div>
+                    <div class="skeleton h-12 rounded mb-2"></div>
+                    <div class="skeleton h-12 rounded"></div>
+                </div>
+                <div id="recentActivityEmptyState" class="hidden flex-1 flex flex-col items-center justify-center text-silver">
+                    <svg class="w-12 h-12 mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <p class="text-sm">No recent activity</p>
+                    <p class="text-xs mt-1 opacity-70">Your search activity will appear here</p>
                 </div>
             </div>
         </div>
 
         <!-- Full Records Table -->
-        <div class="bg-muted-teal rounded-card shadow-lg overflow-hidden">
+        <div class="bg-muted-teal rounded-card shadow-lg overflow-hidden border border-white/5">
             <div class="p-6 border-b border-deep-teal">
                 <h3 class="text-lg font-semibold text-off-white">All Records</h3>
             </div>
@@ -197,10 +329,39 @@
                     </thead>
                     <tbody id="recordsTable" class="divide-y divide-deep-teal">
                         <tr>
-                            <td colspan="6" class="px-6 py-4 text-silver text-center">Loading...</td>
+                            <td class="px-6 py-4"><div class="skeleton h-4 w-32 rounded"></div></td>
+                            <td class="px-6 py-4"><div class="skeleton h-6 w-16 rounded"></div></td>
+                            <td class="px-6 py-4"><div class="skeleton h-4 w-48 rounded"></div></td>
+                            <td class="px-6 py-4"><div class="skeleton h-4 w-20 rounded"></div></td>
+                            <td class="px-6 py-4"><div class="skeleton h-6 w-16 rounded"></div></td>
+                            <td class="px-6 py-4"><div class="skeleton h-4 w-40 rounded"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4"><div class="skeleton h-4 w-32 rounded"></div></td>
+                            <td class="px-6 py-4"><div class="skeleton h-6 w-16 rounded"></div></td>
+                            <td class="px-6 py-4"><div class="skeleton h-4 w-40 rounded"></div></td>
+                            <td class="px-6 py-4"><div class="skeleton h-4 w-20 rounded"></div></td>
+                            <td class="px-6 py-4"><div class="skeleton h-6 w-20 rounded"></div></td>
+                            <td class="px-6 py-4"><div class="skeleton h-4 w-36 rounded"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4"><div class="skeleton h-4 w-32 rounded"></div></td>
+                            <td class="px-6 py-4"><div class="skeleton h-6 w-16 rounded"></div></td>
+                            <td class="px-6 py-4"><div class="skeleton h-4 w-56 rounded"></div></td>
+                            <td class="px-6 py-4"><div class="skeleton h-4 w-20 rounded"></div></td>
+                            <td class="px-6 py-4"><div class="skeleton h-6 w-24 rounded"></div></td>
+                            <td class="px-6 py-4"><div class="skeleton h-4 w-44 rounded"></div></td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            <!-- Empty State for Table -->
+            <div id="recordsEmptyState" class="hidden p-12 text-center">
+                <svg class="w-16 h-16 mx-auto mb-4 text-silver opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                <h4 class="text-lg font-medium text-silver mb-2">No records found</h4>
+                <p class="text-sm text-silver opacity-70">Try adjusting your date range or category filter</p>
             </div>
             <!-- Pagination -->
             <div class="px-6 py-4 border-t border-deep-teal flex items-center justify-between">
@@ -208,10 +369,10 @@
                     Showing 0 of 0 records
                 </div>
                 <div class="flex space-x-2">
-                    <button id="prevBtn" onclick="prevPage()" class="px-3 py-1 border border-silver/30 rounded-card text-sm text-off-white hover:bg-deep-teal disabled:opacity-50 transition" disabled>
+                    <button id="prevBtn" onclick="prevPage()" class="px-4 py-2 border border-silver/20 rounded-lg text-sm text-off-white hover:bg-deep-teal hover:border-silver/30 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 focus-ring" disabled>
                         Previous
                     </button>
-                    <button id="nextBtn" onclick="nextPage()" class="px-3 py-1 border border-silver/30 rounded-card text-sm text-off-white hover:bg-deep-teal disabled:opacity-50 transition" disabled>
+                    <button id="nextBtn" onclick="nextPage()" class="px-4 py-2 border border-silver/20 rounded-lg text-sm text-off-white hover:bg-deep-teal hover:border-silver/30 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 focus-ring" disabled>
                         Next
                     </button>
                 </div>
@@ -220,15 +381,15 @@
     </main>
 
     <!-- Live Count Widget -->
-    <div id="liveWidget" class="fixed bottom-4 right-4 bg-muted-teal rounded-card shadow-lg p-4 hidden border border-silver/20">
+    <div id="liveWidget" class="fixed bottom-4 right-4 bg-muted-teal rounded-card shadow-lg p-4 hidden border border-silver/20 transition-all duration-300 hover:border-silver/30 hover:shadow-xl">
         <div class="text-xs font-medium text-silver mb-1">Live Count</div>
         <div class="flex items-center space-x-4">
             <div>
-                <span id="liveSearches" class="text-2xl font-bold text-terracotta">0</span>
+                <span id="liveSearches" class="text-2xl font-bold text-terracotta transition-all duration-300">0</span>
                 <span class="text-xs text-silver">searches</span>
             </div>
             <div>
-                <span id="liveClicks" class="text-2xl font-bold text-sage">0</span>
+                <span id="liveClicks" class="text-2xl font-bold text-sage transition-all duration-300">0</span>
                 <span class="text-xs text-silver">clicks</span>
             </div>
         </div>
@@ -261,7 +422,7 @@
         };
 
         // Configuration
-        const API_KEY = localStorage.getItem('searchsift_api_key') || '';  // Must be set in browser localStorage
+        const API_KEY = '{{ api_key }}';
         let currentOffset = 0;
         const pageSize = 50;
         let totalRecords = 0;
@@ -297,17 +458,8 @@
             document.getElementById('startDate').value = today.toISOString().split('T')[0];
             document.getElementById('endDate').value = tomorrow.toISOString().split('T')[0];
 
-            // Check for API key
-            if (!API_KEY) {
-                const key = prompt('Enter your SearchSift API key:');
-                if (key) {
-                    localStorage.setItem('searchsift_api_key', key);
-                    location.reload();
-                }
-            } else {
-                loadData();
-                startLivePolling();
-            }
+            loadData();
+            startLivePolling();
         });
 
         // API helper
@@ -345,13 +497,13 @@
                 // Load summary
                 const summary = await apiCall(`/api/summary?start=${startDate}&end=${endDate}`);
 
-                // Update stats
-                document.getElementById('totalSearches').textContent = summary.total_searches || 0;
-                document.getElementById('totalClicks').textContent = summary.total_clicks || 0;
+                // Update stats with animation
+                animateValue('totalSearches', summary.total_searches || 0);
+                animateValue('totalClicks', summary.total_clicks || 0);
 
                 // Calculate unique queries from top queries
                 const uniqueQueries = summary.top_queries?.length || 0;
-                document.getElementById('uniqueQueries').textContent = uniqueQueries;
+                animateValue('uniqueQueries', uniqueQueries);
 
                 // Find top category
                 const categories = summary.by_category || {};
@@ -389,7 +541,24 @@
                     <span class="w-2 h-2 bg-terracotta rounded-full mr-2"></span>
                     <span class="text-terracotta">Disconnected</span>
                 `;
+                showEmptyStates();
             }
+        }
+
+        // Animate number values
+        function animateValue(elementId, endValue) {
+            const element = document.getElementById(elementId);
+            element.textContent = endValue;
+            element.classList.add('animate-fade-in');
+            setTimeout(() => element.classList.remove('animate-fade-in'), 300);
+        }
+
+        // Show empty states when no data
+        function showEmptyStates() {
+            document.getElementById('totalSearches').textContent = '0';
+            document.getElementById('totalClicks').textContent = '0';
+            document.getElementById('uniqueQueries').textContent = '0';
+            document.getElementById('topCategory').textContent = '--';
         }
 
         // Load records table
@@ -407,16 +576,20 @@
 
                 // Update table
                 const tbody = document.getElementById('recordsTable');
+                const emptyState = document.getElementById('recordsEmptyState');
+
                 if (data.records.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-4 text-silver text-center">No records found</td></tr>';
+                    tbody.innerHTML = '';
+                    emptyState.classList.remove('hidden');
                 } else {
+                    emptyState.classList.add('hidden');
                     tbody.innerHTML = data.records.map(record => `
-                        <tr class="hover:bg-deep-teal/50 transition">
+                        <tr class="row-hover hover:bg-deep-teal/50">
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-silver">
                                 ${formatDate(record.timestamp_utc)}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <span class="px-2 py-1 rounded-card text-xs font-medium ${record.event_type === 'search' ? 'bg-terracotta/20 text-terracotta' : 'bg-sage/20 text-sage'}">
+                                <span class="px-2.5 py-1 rounded-lg text-xs font-medium transition-colors ${record.event_type === 'search' ? 'bg-terracotta/20 text-terracotta' : 'bg-sage/20 text-sage'}">
                                     ${record.event_type}
                                 </span>
                             </td>
@@ -432,7 +605,7 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4 text-sm text-silver max-w-xs truncate" title="${escapeHtml(record.url || '')}">
-                                ${record.url ? `<a href="${escapeHtml(record.url)}" target="_blank" class="text-terracotta hover:text-terracotta-dark hover:underline transition">${truncateUrl(record.url)}</a>` : '-'}
+                                ${record.url ? `<a href="${escapeHtml(record.url)}" target="_blank" class="text-terracotta hover:text-terracotta-dark hover:underline transition-colors">${truncateUrl(record.url)}</a>` : '-'}
                             </td>
                         </tr>
                     `).join('');
@@ -443,7 +616,7 @@
 
                 // Update pagination
                 document.getElementById('paginationInfo').textContent =
-                    `Showing ${currentOffset + 1}-${Math.min(currentOffset + pageSize, totalRecords)} of ${totalRecords} records`;
+                    totalRecords > 0 ? `Showing ${currentOffset + 1}-${Math.min(currentOffset + pageSize, totalRecords)} of ${totalRecords} records` : 'No records';
                 document.getElementById('prevBtn').disabled = currentOffset === 0;
                 document.getElementById('nextBtn').disabled = currentOffset + pageSize >= totalRecords;
 
@@ -470,6 +643,9 @@
         // Update charts
         function updateCategoryChart(data) {
             const ctx = document.getElementById('categoryChart').getContext('2d');
+            const skeleton = document.getElementById('categoryChartSkeleton');
+            const canvas = document.getElementById('categoryChart');
+            const emptyState = document.getElementById('categoryEmptyState');
 
             if (categoryChart) {
                 categoryChart.destroy();
@@ -477,6 +653,18 @@
 
             const labels = Object.keys(data);
             const values = Object.values(data);
+
+            // Hide skeleton
+            skeleton.classList.add('hidden');
+
+            if (labels.length === 0 || values.every(v => v === 0)) {
+                canvas.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            canvas.classList.remove('hidden');
+            emptyState.classList.add('hidden');
 
             categoryChart = new Chart(ctx, {
                 type: 'doughnut',
@@ -491,6 +679,12 @@
                 },
                 options: {
                     responsive: true,
+                    animation: {
+                        animateRotate: true,
+                        animateScale: true,
+                        duration: 600,
+                        easing: 'easeOutQuart'
+                    },
                     plugins: {
                         legend: {
                             position: 'right',
@@ -498,7 +692,7 @@
                                 color: THEME.offWhite,
                                 padding: 12,
                                 font: {
-                                    family: "Inter, sans-serif"
+                                    family: "Lora, Georgia, serif"
                                 }
                             }
                         }
@@ -509,6 +703,9 @@
 
         function updateTrendChart(trendData) {
             const ctx = document.getElementById('trendChart').getContext('2d');
+            const skeleton = document.getElementById('trendChartSkeleton');
+            const canvas = document.getElementById('trendChart');
+            const emptyState = document.getElementById('trendEmptyState');
 
             if (trendChart) {
                 trendChart.destroy();
@@ -516,10 +713,29 @@
 
             const { categories, data } = trendData;
 
+            // Hide skeleton
+            skeleton.classList.add('hidden');
+
+            // Check if there's any data
+            if (!data || data.length === 0) {
+                canvas.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            canvas.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+
             // Filter to only show categories that have data
             const activeCategories = categories.filter(cat =>
                 data.some(d => d[cat] > 0)
             );
+
+            if (activeCategories.length === 0) {
+                canvas.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
 
             // Create datasets for each category
             const datasets = activeCategories.map(category => ({
@@ -530,7 +746,7 @@
                 fill: false,
                 tension: 0.3,
                 pointRadius: 3,
-                pointHoverRadius: 5,
+                pointHoverRadius: 6,
                 pointBackgroundColor: CATEGORY_COLORS[category] || THEME.silver,
             }));
 
@@ -544,6 +760,10 @@
                 },
                 options: {
                     responsive: true,
+                    animation: {
+                        duration: 600,
+                        easing: 'easeOutQuart'
+                    },
                     interaction: {
                         mode: 'index',
                         intersect: false,
@@ -556,7 +776,7 @@
                                 padding: 12,
                                 usePointStyle: true,
                                 font: {
-                                    family: "Inter, sans-serif",
+                                    family: "Lora, Georgia, serif",
                                     size: 11
                                 }
                             }
@@ -567,6 +787,8 @@
                             bodyColor: THEME.silver,
                             borderColor: THEME.deepTeal,
                             borderWidth: 1,
+                            padding: 12,
+                            cornerRadius: 8,
                         }
                     },
                     scales: {
@@ -576,7 +798,7 @@
                                 stepSize: 1,
                                 color: THEME.silver,
                                 font: {
-                                    family: "Inter, sans-serif"
+                                    family: "Lora, Georgia, serif"
                                 }
                             },
                             grid: {
@@ -588,7 +810,7 @@
                                 color: THEME.silver,
                                 maxRotation: 45,
                                 font: {
-                                    family: "Inter, sans-serif"
+                                    family: "Lora, Georgia, serif"
                                 }
                             },
                             grid: {
@@ -603,17 +825,21 @@
         // Update top queries list
         function updateTopQueries(queries) {
             const container = document.getElementById('topQueries');
+            const emptyState = document.getElementById('topQueriesEmptyState');
+
             if (queries.length === 0) {
-                container.innerHTML = '<p class="text-silver text-sm">No queries yet</p>';
+                container.innerHTML = '';
+                emptyState.classList.remove('hidden');
                 return;
             }
 
+            emptyState.classList.add('hidden');
             container.innerHTML = queries.map((q, i) => `
-                <div class="flex items-center justify-between py-2 ${i > 0 ? 'border-t border-deep-teal' : ''}">
+                <div class="flex items-center justify-between py-2.5 px-3 rounded-lg row-hover hover:bg-deep-teal/50 ${i > 0 ? 'border-t border-deep-teal/50' : ''} animate-fade-in" style="animation-delay: ${i * 50}ms">
                     <span class="text-sm text-off-white truncate flex-1" title="${escapeHtml(q.query)}">
                         ${escapeHtml(q.query)}
                     </span>
-                    <span class="ml-2 text-xs text-terracotta bg-terracotta/20 px-2 py-1 rounded-card font-medium">
+                    <span class="ml-2 text-xs text-terracotta bg-terracotta/20 px-2.5 py-1 rounded-lg font-medium">
                         ${q.count}
                     </span>
                 </div>
@@ -623,16 +849,21 @@
         // Update recent activity - show limited items to fill card without scroll
         function updateRecentActivity(records) {
             const container = document.getElementById('recentActivity');
+            const emptyState = document.getElementById('recentActivityEmptyState');
+
             if (records.length === 0) {
-                container.innerHTML = '<p class="text-silver text-sm flex-1 flex items-center justify-center">No recent activity</p>';
+                container.innerHTML = '';
+                emptyState.classList.remove('hidden');
                 return;
             }
+
+            emptyState.classList.add('hidden');
 
             // Show only 8 most recent items to fill card nicely
             const recentItems = records.slice(0, 8);
 
-            container.innerHTML = recentItems.map(r => `
-                <div class="py-3 border-b border-deep-teal/50 last:border-0">
+            container.innerHTML = recentItems.map((r, i) => `
+                <div class="py-3 px-3 rounded-lg row-hover hover:bg-deep-teal/50 border-b border-deep-teal/30 last:border-0 animate-fade-in" style="animation-delay: ${i * 50}ms">
                     <div class="flex items-center space-x-3">
                         <span class="w-2.5 h-2.5 rounded-full flex-shrink-0 ${r.event_type === 'search' ? 'bg-terracotta' : 'bg-sage'}"></span>
                         <span class="text-sm text-off-white truncate flex-1">${escapeHtml(r.query)}</span>
@@ -651,8 +882,24 @@
                 try {
                     const today = new Date().toISOString().split('T')[0];
                     const summary = await apiCall(`/api/summary?start=${today}&end=${today}`);
-                    document.getElementById('liveSearches').textContent = summary.total_searches || 0;
-                    document.getElementById('liveClicks').textContent = summary.total_clicks || 0;
+
+                    const searchesEl = document.getElementById('liveSearches');
+                    const clicksEl = document.getElementById('liveClicks');
+
+                    const newSearches = summary.total_searches || 0;
+                    const newClicks = summary.total_clicks || 0;
+
+                    // Add pulse animation if values changed
+                    if (searchesEl.textContent !== String(newSearches)) {
+                        searchesEl.textContent = newSearches;
+                        searchesEl.classList.add('scale-110');
+                        setTimeout(() => searchesEl.classList.remove('scale-110'), 200);
+                    }
+                    if (clicksEl.textContent !== String(newClicks)) {
+                        clicksEl.textContent = newClicks;
+                        clicksEl.classList.add('scale-110');
+                        setTimeout(() => clicksEl.classList.remove('scale-110'), 200);
+                    }
                 } catch (error) {
                     // Silently fail for live updates
                 }
@@ -681,13 +928,13 @@
 
         // Render multiple category badges
         function renderCategoryBadges(categoryString) {
-            if (!categoryString) return '<span class="px-2 py-1 rounded-card text-xs font-medium bg-silver/20 text-silver">Other</span>';
+            if (!categoryString) return '<span class="px-2.5 py-1 rounded-lg text-xs font-medium bg-silver/20 text-silver">Other</span>';
 
             // Split by comma and trim whitespace
             const categories = categoryString.split(',').map(c => c.trim()).filter(c => c);
 
             return categories.map(cat =>
-                `<span class="px-2 py-1 rounded-card text-xs font-medium ${getCategoryColor(cat)}">${cat}</span>`
+                `<span class="px-2.5 py-1 rounded-lg text-xs font-medium transition-colors ${getCategoryColor(cat)}">${cat}</span>`
             ).join('');
         }
 

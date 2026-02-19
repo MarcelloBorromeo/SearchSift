@@ -687,7 +687,7 @@ def report_csv():
 @app.route('/')
 def dashboard():
     """Main dashboard UI."""
-    return render_template('dashboard.html')
+    return render_template('dashboard.html', api_key=API_KEY)
 
 
 @app.route('/help')

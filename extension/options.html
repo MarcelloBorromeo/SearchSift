@@ -4,7 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SearchSift Settings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --deep-teal: #1A262E;
+      --muted-teal: #263842;
+      --terracotta: #E07A5F;
+      --terracotta-dark: #C96A52;
+      --sage: #81B29A;
+      --sage-dark: #6A9A82;
+      --off-white: #F2F4F3;
+      --silver: #9CA3AF;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -12,14 +26,16 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #f1f5f9;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-weight: 300;
+      background: var(--deep-teal);
+      color: var(--off-white);
       padding: 40px 20px;
       min-height: 100vh;
     }
 
     .container {
-      max-width: 500px;
+      max-width: 520px;
       margin: 0 auto;
     }
 
@@ -31,7 +47,7 @@
     .logo {
       width: 64px;
       height: 64px;
-      background: #3b82f6;
+      background: var(--terracotta);
       border-radius: 16px;
       margin: 0 auto 16px;
       display: flex;
@@ -39,34 +55,59 @@
       justify-content: center;
       color: white;
       font-size: 28px;
-      font-weight: bold;
+      font-weight: 500;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 24px rgba(224, 122, 95, 0.3);
     }
 
     h1 {
       font-size: 24px;
-      color: #1e293b;
+      font-weight: 400;
+      color: var(--off-white);
       margin-bottom: 8px;
     }
 
     .subtitle {
-      color: #64748b;
+      color: var(--silver);
       font-size: 14px;
     }
 
     .card {
-      background: white;
+      background: var(--muted-teal);
       border-radius: 12px;
       padding: 24px;
       margin-bottom: 20px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     }
 
     .card h2 {
-      font-size: 16px;
-      color: #1e293b;
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--off-white);
       margin-bottom: 16px;
       padding-bottom: 12px;
-      border-bottom: 1px solid #e2e8f0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card h2::before {
+      content: '';
+      width: 3px;
+      height: 16px;
+      background: var(--terracotta);
+      border-radius: 2px;
     }
 
     .form-group {
@@ -75,75 +116,139 @@
 
     label {
       display: block;
-      font-size: 14px;
-      font-weight: 500;
-      color: #475569;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--silver);
       margin-bottom: 6px;
     }
 
     input[type="text"],
     input[type="password"] {
       width: 100%;
-      padding: 10px 12px;
-      border: 1px solid #cbd5e1;
-      border-radius: 6px;
+      padding: 11px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
       font-size: 14px;
-      transition: border-color 0.2s;
+      font-weight: 300;
+      background: var(--deep-teal);
+      color: var(--off-white);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
-    input:focus {
+    input[type="text"]:focus,
+    input[type="password"]:focus {
       outline: none;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      border-color: var(--terracotta);
+      box-shadow: 0 0 0 3px rgba(224, 122, 95, 0.15);
+    }
+
+    input[type="text"]::placeholder,
+    input[type="password"]::placeholder {
+      color: var(--silver);
+      opacity: 0.6;
     }
 
     .hint {
       font-size: 12px;
-      color: #94a3b8;
-      margin-top: 4px;
+      color: var(--silver);
+      margin-top: 6px;
+      opacity: 0.8;
     }
 
     .checkbox-group {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+      padding: 8px 0;
+      transition: opacity 0.2s ease;
     }
 
-    .checkbox-group input {
-      width: 18px;
-      height: 18px;
+    .checkbox-group:hover {
+      opacity: 0.9;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 5px;
+      background: var(--deep-teal);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .checkbox-group input[type="checkbox"]:checked {
+      background: var(--terracotta);
+      border-color: var(--terracotta);
+    }
+
+    .checkbox-group input[type="checkbox"]:checked::after {
+      content: '';
+      position: absolute;
+      left: 6px;
+      top: 2px;
+      width: 5px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+
+    .checkbox-group input[type="checkbox"]:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(224, 122, 95, 0.2);
     }
 
     .checkbox-group label {
       margin: 0;
+      cursor: pointer;
+      color: var(--off-white);
+      font-size: 14px;
     }
 
     button {
       padding: 12px 24px;
       border: none;
       border-radius: 8px;
+      font-family: 'Inter', sans-serif;
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 400;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
+    }
+
+    button:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--deep-teal), 0 0 0 4px var(--terracotta);
     }
 
     .btn-primary {
-      background: #3b82f6;
+      background: var(--terracotta);
       color: white;
     }
 
     .btn-primary:hover {
-      background: #2563eb;
+      background: var(--terracotta-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(224, 122, 95, 0.25);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
     }
 
     .btn-secondary {
-      background: #e2e8f0;
-      color: #475569;
+      background: var(--muted-teal);
+      color: var(--off-white);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .btn-secondary:hover {
-      background: #cbd5e1;
+      background: #2d4450;
+      border-color: rgba(255, 255, 255, 0.15);
     }
 
     .actions {
@@ -153,50 +258,109 @@
     }
 
     .message {
-      padding: 12px 16px;
+      padding: 14px 16px;
       border-radius: 8px;
       margin-bottom: 20px;
       font-size: 14px;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .message.success {
-      background: #dcfce7;
-      color: #166534;
+      background: rgba(129, 178, 154, 0.15);
+      color: var(--sage);
+      border: 1px solid rgba(129, 178, 154, 0.3);
     }
 
     .message.error {
-      background: #fef2f2;
-      color: #dc2626;
+      background: rgba(239, 68, 68, 0.15);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.2);
     }
 
     .connection-test {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 12px;
-      background: #f8fafc;
-      border-radius: 6px;
+      gap: 10px;
+      padding: 12px 14px;
+      background: var(--deep-teal);
+      border-radius: 8px;
       margin-top: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .test-indicator {
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: #94a3b8;
+      background: var(--silver);
+      transition: all 0.3s ease;
     }
 
     .test-indicator.success {
-      background: #22c55e;
+      background: var(--sage);
+      box-shadow: 0 0 8px rgba(129, 178, 154, 0.5);
     }
 
     .test-indicator.error {
       background: #ef4444;
+      box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+    }
+
+    .test-indicator.testing {
+      animation: pulse 1s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
     }
 
     .test-text {
       font-size: 13px;
-      color: #64748b;
+      color: var(--silver);
+      flex: 1;
+    }
+
+    .test-btn {
+      padding: 6px 14px;
+      font-size: 12px;
+    }
+
+    /* Search engines grid */
+    .engines-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .engines-grid .checkbox-group {
+      padding: 6px 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .engines-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .actions button {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -215,7 +379,7 @@
 
       <div class="form-group">
         <label for="backendUrl">Backend URL</label>
-        <input type="text" id="backendUrl" value="http://127.0.0.1:5050" placeholder="http://127.0.0.1:5000">
+        <input type="text" id="backendUrl" value="http://127.0.0.1:5000" placeholder="http://127.0.0.1:5000">
         <p class="hint">The URL where your SearchSift backend is running</p>
       </div>
 
@@ -228,7 +392,7 @@
       <div class="connection-test">
         <div id="testIndicator" class="test-indicator"></div>
         <span id="testText" class="test-text">Not tested</span>
-        <button id="testBtn" class="btn-secondary" style="margin-left: auto; padding: 6px 12px;">Test Connection</button>
+        <button id="testBtn" class="btn-secondary test-btn">Test</button>
       </div>
     </div>
 
@@ -260,25 +424,15 @@
 
     <div class="card">
       <h2>Search Engines</h2>
-      <p class="hint" style="margin-bottom: 12px;">Select which search engines to track:</p>
+      <p class="hint" style="margin-bottom: 14px;">Select which search engines to track:</p>
 
-      <div class="form-group">
-        <div class="checkbox-group"><input type="checkbox" id="engineGoogle" checked><label>Google</label></div>
-      </div>
-      <div class="form-group">
-        <div class="checkbox-group"><input type="checkbox" id="engineBing" checked><label>Bing</label></div>
-      </div>
-      <div class="form-group">
-        <div class="checkbox-group"><input type="checkbox" id="engineDuckDuckGo" checked><label>DuckDuckGo</label></div>
-      </div>
-      <div class="form-group">
-        <div class="checkbox-group"><input type="checkbox" id="engineStartPage" checked><label>StartPage</label></div>
-      </div>
-      <div class="form-group">
-        <div class="checkbox-group"><input type="checkbox" id="engineYahoo" checked><label>Yahoo</label></div>
-      </div>
-      <div class="form-group">
-        <div class="checkbox-group"><input type="checkbox" id="engineOther" checked><label>Other (Ecosia, Qwant, Brave, etc.)</label></div>
+      <div class="engines-grid">
+        <div class="checkbox-group"><input type="checkbox" id="engineGoogle" checked><label for="engineGoogle">Google</label></div>
+        <div class="checkbox-group"><input type="checkbox" id="engineBing" checked><label for="engineBing">Bing</label></div>
+        <div class="checkbox-group"><input type="checkbox" id="engineDuckDuckGo" checked><label for="engineDuckDuckGo">DuckDuckGo</label></div>
+        <div class="checkbox-group"><input type="checkbox" id="engineStartPage" checked><label for="engineStartPage">StartPage</label></div>
+        <div class="checkbox-group"><input type="checkbox" id="engineYahoo" checked><label for="engineYahoo">Yahoo</label></div>
+        <div class="checkbox-group"><input type="checkbox" id="engineOther" checked><label for="engineOther">Other</label></div>
       </div>
     </div>
 

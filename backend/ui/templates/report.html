@@ -21,7 +21,7 @@
                         'silver': '#9CA3AF',
                     },
                     fontFamily: {
-                        'styrene': ['Styrene A', 'Styrene B', 'Inter', 'Roboto', 'system-ui', 'sans-serif'],
+                        'lora': ['Lora', 'Georgia', 'serif'],
                     },
                     borderRadius: {
                         'card': '8px',
@@ -30,27 +30,12 @@
             }
         }
     </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
     <style>
-        @font-face {
-            font-family: 'Styrene A';
-            src: local('Styrene A'), local('StyreneA-Regular');
-            font-weight: 400;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'Styrene A';
-            src: local('Styrene A Medium'), local('StyreneA-Medium');
-            font-weight: 500;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'Styrene A';
-            src: local('Styrene A Bold'), local('StyreneA-Bold');
-            font-weight: 700;
-            font-style: normal;
-        }
         body {
-            font-family: 'Styrene A', 'Inter', 'Roboto', system-ui, sans-serif;
+            font-family: 'Lora', Georgia, serif;
         }
         @media print {
             .no-print { display: none !important; }
@@ -78,7 +63,7 @@
         }
     </style>
 </head>
-<body class="bg-deep-teal min-h-screen text-off-white font-styrene">
+<body class="bg-deep-teal min-h-screen text-off-white font-lora">
     <div class="max-w-4xl mx-auto px-4 py-8">
         <!-- Header -->
         <div class="bg-muted-teal rounded-card shadow-lg p-6 mb-6">
@@ -308,7 +293,7 @@
                             color: THEME.offWhite,
                             padding: 12,
                             font: {
-                                family: "'Styrene A', 'Inter', sans-serif"
+                                family: "'Lora', Georgia, serif"
                             }
                         }
                     }
@@ -369,7 +354,7 @@
                                 color: THEME.offWhite,
                                 padding: 12,
                                 usePointStyle: true,
-                                font: { family: "'Styrene A', 'Inter', sans-serif", size: 11 }
+                                font: { family: "'Lora', Georgia, serif", size: 11 }
                             }
                         }
                     },
@@ -379,7 +364,7 @@
                             ticks: {
                                 stepSize: 1,
                                 color: THEME.silver,
-                                font: { family: "'Styrene A', 'Inter', sans-serif" }
+                                font: { family: "'Lora', Georgia, serif" }
                             },
                             grid: { color: 'rgba(156, 163, 175, 0.1)' }
                         },
@@ -387,7 +372,7 @@
                             ticks: {
                                 color: THEME.silver,
                                 maxRotation: 45,
-                                font: { family: "'Styrene A', 'Inter', sans-serif" }
+                                font: { family: "'Lora', Georgia, serif" }
                             },
                             grid: { display: false }
                         }
@@ -422,14 +407,14 @@
                         beginAtZero: true,
                         ticks: {
                             color: THEME.silver,
-                            font: { family: "'Styrene A', 'Inter', sans-serif" }
+                            font: { family: "'Lora', Georgia, serif" }
                         },
                         grid: { color: 'rgba(156, 163, 175, 0.1)' }
                     },
                     x: {
                         ticks: {
                             color: THEME.silver,
-                            font: { family: "'Styrene A', 'Inter', sans-serif" }
+                            font: { family: "'Lora', Georgia, serif" }
                         },
                         grid: { display: false }
                     }

@@ -4,7 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SearchSift</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --deep-teal: #1A262E;
+      --muted-teal: #263842;
+      --terracotta: #E07A5F;
+      --terracotta-dark: #C96A52;
+      --sage: #81B29A;
+      --sage-dark: #6A9A82;
+      --off-white: #F2F4F3;
+      --silver: #9CA3AF;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -12,10 +26,12 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      width: 300px;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-weight: 300;
+      width: 320px;
       padding: 16px;
-      background: #f8fafc;
+      background: var(--deep-teal);
+      color: var(--off-white);
     }
 
     .header {
@@ -25,31 +41,43 @@
     }
 
     .logo {
-      width: 32px;
-      height: 32px;
-      background: #3b82f6;
+      width: 36px;
+      height: 36px;
+      background: var(--terracotta);
       border-radius: 8px;
       margin-right: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
-      font-weight: bold;
+      font-weight: 500;
+      font-size: 18px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(224, 122, 95, 0.3);
     }
 
     h1 {
       font-size: 18px;
-      color: #1e293b;
+      font-weight: 400;
+      color: var(--off-white);
     }
 
     .status {
       display: flex;
       align-items: center;
-      padding: 12px;
-      background: white;
+      padding: 12px 14px;
+      background: var(--muted-teal);
       border-radius: 8px;
       margin-bottom: 12px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      transition: background 0.2s ease;
+    }
+
+    .status:hover {
+      background: #2d4450;
     }
 
     .status-indicator {
@@ -57,49 +85,78 @@
       height: 10px;
       border-radius: 50%;
       margin-right: 10px;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
     }
 
     .status-indicator.connected {
-      background: #22c55e;
+      background: var(--sage);
+      box-shadow: 0 0 8px rgba(129, 178, 154, 0.5);
     }
 
     .status-indicator.disconnected {
       background: #ef4444;
+      box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
     }
 
     .status-indicator.warning {
       background: #f59e0b;
+      box-shadow: 0 0 8px rgba(245, 158, 11, 0.5);
+    }
+
+    .status-indicator.checking {
+      background: var(--silver);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
     }
 
     .status-text {
       flex: 1;
-      font-size: 14px;
-      color: #475569;
+      font-size: 13px;
+      color: var(--silver);
     }
 
     .stats {
-      background: white;
+      background: var(--muted-teal);
       border-radius: 8px;
-      padding: 12px;
+      padding: 4px 0;
       margin-bottom: 12px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      overflow: hidden;
     }
 
     .stat-row {
       display: flex;
       justify-content: space-between;
-      padding: 6px 0;
-      font-size: 14px;
-      color: #475569;
+      align-items: center;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--silver);
+      transition: background 0.2s ease;
+    }
+
+    .stat-row:hover {
+      background: rgba(255, 255, 255, 0.03);
     }
 
     .stat-row:not(:last-child) {
-      border-bottom: 1px solid #e2e8f0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .stat-value {
-      font-weight: 600;
-      color: #1e293b;
+      font-weight: 400;
+      color: var(--off-white);
+      font-size: 14px;
+    }
+
+    .stat-value.terracotta {
+      color: var(--terracotta);
+    }
+
+    .stat-value.sage {
+      color: var(--sage);
     }
 
     .actions {
@@ -109,51 +166,103 @@
 
     button {
       flex: 1;
-      padding: 10px 16px;
+      padding: 11px 16px;
       border: none;
-      border-radius: 6px;
-      font-size: 14px;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: all 0.2s ease;
+    }
+
+    button:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--deep-teal), 0 0 0 4px var(--terracotta);
     }
 
     .btn-primary {
-      background: #3b82f6;
+      background: var(--terracotta);
       color: white;
     }
 
     .btn-primary:hover {
-      background: #2563eb;
+      background: var(--terracotta-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(224, 122, 95, 0.25);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
     }
 
     .btn-secondary {
-      background: #e2e8f0;
-      color: #475569;
+      background: var(--muted-teal);
+      color: var(--off-white);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .btn-secondary:hover {
-      background: #cbd5e1;
+      background: #2d4450;
+      border-color: rgba(255, 255, 255, 0.15);
     }
 
     .error {
-      background: #fef2f2;
-      color: #dc2626;
-      padding: 10px;
-      border-radius: 6px;
-      font-size: 13px;
+      background: rgba(239, 68, 68, 0.15);
+      color: #fca5a5;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 12px;
       margin-bottom: 12px;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      animation: slideIn 0.2s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .footer {
-      margin-top: 12px;
+      margin-top: 14px;
       text-align: center;
-      font-size: 12px;
-      color: #94a3b8;
+      font-size: 11px;
+      color: var(--silver);
     }
 
     .footer a {
-      color: #3b82f6;
+      color: var(--terracotta);
       text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer a:hover {
+      color: var(--terracotta-dark);
+      text-decoration: underline;
+    }
+
+    /* Skeleton loading */
+    .skeleton {
+      background: linear-gradient(90deg, var(--muted-teal) 25%, #2d4450 50%, var(--muted-teal) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 4px;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .skeleton-text {
+      height: 14px;
+      width: 40px;
     }
   </style>
 </head>
@@ -164,7 +273,7 @@
   </div>
 
   <div class="status">
-    <div id="statusIndicator" class="status-indicator disconnected"></div>
+    <div id="statusIndicator" class="status-indicator checking"></div>
     <span id="statusText" class="status-text">Checking connection...</span>
   </div>
 
@@ -177,11 +286,11 @@
     </div>
     <div class="stat-row">
       <span>Today's searches</span>
-      <span id="todayCount" class="stat-value">--</span>
+      <span id="todayCount" class="stat-value terracotta">--</span>
     </div>
     <div class="stat-row">
       <span>Today's clicks</span>
-      <span id="clickCount" class="stat-value">--</span>
+      <span id="clickCount" class="stat-value sage">--</span>
     </div>
   </div>
 
