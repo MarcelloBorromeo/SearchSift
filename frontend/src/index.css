@@ -56,15 +56,6 @@ body {
 .burgundy-outline {
   color: #800020;
   font-weight: 900;
-  text-shadow: 
-    -2px -2px 0 #800020,
-    2px -2px 0 #800020,
-    -2px 2px 0 #800020,
-    2px 2px 0 #800020,
-    -1px -1px 0 #800020,
-    1px -1px 0 #800020,
-    -1px 1px 0 #800020,
-    1px 1px 0 #800020;
 }
 
 /* Category badge colors */

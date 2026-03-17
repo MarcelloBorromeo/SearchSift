@@ -18,7 +18,7 @@ DEBUG = os.getenv('FLASK_DEBUG', 'False').lower() == 'true'
 
 # API Key for extension authentication
 # Generate with: python scripts/generate_api_key.py
-API_KEY = os.getenv('SEARCHSIFT_API_KEY', '')  # Set via environment variable or .env file
+API_KEY = os.getenv('SEARCHSIFT_API_KEY', 'iqTvNvkIYQUvLXkshjKrivbs4u3xK0tF')
 
 # CORS settings - allowed extension origins
 # Add your extension ID after loading it in Chrome

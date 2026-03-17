@@ -10,7 +10,7 @@
 
 // Configuration
 const CONFIG = {
-  backendUrl: 'http://127.0.0.1:5050/ingest',
+  backendUrl: 'http://127.0.0.1:5000/ingest',
   batchSize: 20,
   batchTimeoutMs: 10000,
   maxRetries: 5,
