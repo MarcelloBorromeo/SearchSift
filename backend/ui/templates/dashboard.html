@@ -666,6 +666,25 @@
             canvas.classList.remove('hidden');
             emptyState.classList.add('hidden');
 
+            const shadowPlugin = {
+                id: 'segmentShadow',
+                afterDraw(chart) {
+                    const activeElements = chart.getActiveElements();
+                    if (!activeElements.length) return;
+                    const { ctx } = chart;
+                    activeElements.forEach(({ datasetIndex, index }) => {
+                        const element = chart.getDatasetMeta(datasetIndex).data[index];
+                        ctx.save();
+                        ctx.shadowColor = 'rgba(0,0,0,0.65)';
+                        ctx.shadowBlur = 24;
+                        ctx.shadowOffsetX = 6;
+                        ctx.shadowOffsetY = 12;
+                        element.draw(ctx);
+                        ctx.restore();
+                    });
+                }
+            };
+
             categoryChart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
@@ -675,8 +694,11 @@
                         backgroundColor: THEME.chartColors,
                         borderColor: THEME.mutedTeal,
                         borderWidth: 2,
+                        hoverOffset: 22,
+                        hoverBorderWidth: 3,
                     }]
                 },
+                plugins: [shadowPlugin],
                 options: {
                     responsive: true,
                     animation: {
